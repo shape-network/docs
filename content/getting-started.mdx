@@ -1,0 +1,117 @@
+# Getting Started
+
+TODO
+
+# Getting Started with Shape
+
+This guide will help you get started with building on Shape. Follow these steps to set up your development environment and deploy your first smart contract.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- A code editor like [Visual Studio Code](https://code.visualstudio.com/)
+- Basic knowledge of Ethereum development
+
+## Setting Up Your Development Environment
+
+### 1. Install Hardhat or Foundry
+
+Shape is compatible with popular Ethereum development frameworks like Hardhat and Foundry.
+
+With npm:
+
+```bash
+npm install --save-dev hardhat
+```
+
+Or with Foundry:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+### 2. Configure Your Network Settings
+
+Add Shape network configurations to your project:
+
+For Hardhat, add to your `hardhat.config.js`:
+
+```javascript
+module.exports = {
+  networks: {
+    shape: {
+      url: 'https://rpc.shape.network',
+      chainId: 2231, // Shape mainnet
+      accounts: [process.env.PRIVATE_KEY],
+    },
+    'shape-testnet': {
+      url: 'https://rpc.testnet.shape.network',
+      chainId: 2232, // Shape testnet
+      accounts: [process.env.PRIVATE_KEY],
+    },
+  },
+};
+```
+
+### 3. Get Testnet Tokens
+
+To deploy contracts and interact with the Shape testnet, you'll need testnet tokens. Visit our faucet at [faucet.shape.network](https://faucet.shape.network).
+
+## Deploying Your First Contract
+
+### 1. Write a Simple Contract
+
+Create a simple smart contract:
+
+```solidity
+// contracts/Greeter.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Greeter {
+    string private greeting;
+
+    constructor(string memory _greeting) {
+        greeting = _greeting;
+    }
+
+    function greet() public view returns (string memory) {
+        return greeting;
+    }
+
+    function setGreeting(string memory _greeting) public {
+        greeting = _greeting;
+    }
+}
+```
+
+### 2. Deploy to Shape Testnet
+
+With Hardhat:
+
+```bash
+npx hardhat run scripts/deploy.js --network shape-testnet
+```
+
+### 3. Verify Your Contract
+
+After deploying, verify your contract on the Shape Explorer:
+
+```bash
+npx hardhat verify --network shape-testnet DEPLOYED_CONTRACT_ADDRESS "Initial Greeting"
+```
+
+## Next Steps
+
+Now that you've deployed your first contract on Shape, explore more advanced features:
+
+- Learn about [gasback rewards](/gasback)
+- Set up [monitoring and observability](/tools/explorers)
+- Integrate with [data indexers](/data-indexers)
+- Explore the [Shape Stack](/the-stack)
+
+For any issues or questions, join our [Discord community](https://discord.gg/shape) or browse our [GitHub repositories](https://github.com/shape-network).

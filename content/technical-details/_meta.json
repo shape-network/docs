@@ -1,0 +1,9 @@
+{
+  "index": {
+    "title": "Overview",
+    "display": "hidden"
+  },
+  "network-information": "Network Information",
+  "contract-addresses": "Contract Addresses",
+  "run-a-node": "Run a Node"
+}
