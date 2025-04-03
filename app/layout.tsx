@@ -74,6 +74,7 @@ export default async function RootLayout({ children }) {
             next: true,
             prev: true,
           }}
+          editLink={<span>Edit this page</span>}
         >
           {children}
         </Layout>
