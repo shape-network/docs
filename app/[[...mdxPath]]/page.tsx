@@ -9,7 +9,7 @@ export async function generateMetadata(props) {
   return metadata;
 }
 
-const Wrapper = getMDXComponents().wrapper;
+const Wrapper = getMDXComponents({}).wrapper;
 
 export default async function Page(props) {
   const params = await props.params;
