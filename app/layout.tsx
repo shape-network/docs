@@ -4,14 +4,20 @@ import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
 import './global.css';
 import { paths } from '../paths';
-import { Logo } from '@components/Logos';
+import { Discord, Logo, Twitter } from '@components/Logos';
 
 export const metadata = {
-  title: 'Shape Docs',
-  description: 'TODO',
+  title: {
+    absolute: 'Shape Docs',
+    template: '%s - Shape Docs',
+  },
+  description: 'Shape is the chain for creators, built on top of Ethereum.',
   openGraph: {
-    title: 'Shape Docs',
-    description: 'TODO',
+    title: {
+      absolute: 'Shape Docs',
+      template: '%s - Shape Docs',
+    },
+    description: 'Shape is the chain for creators, built on top of Ethereum.',
     images: [{ url: 'todo' }],
   },
 };
@@ -38,8 +44,23 @@ const navbar = (
     projectLink={paths.shape}
   />
 );
-const footer = <Footer>{new Date().getFullYear()} © Pattern Engine.</Footer>;
+const footer = (
+  <Footer>
+    <div className="flex items-center justify-between gap-8 w-full">
+      <p>{new Date().getFullYear()} © Pattern Engine.</p>
 
+      <span className="flex items-center gap-6">
+        <a href={paths.twitter} target="_blank" rel="noopener noreferrer">
+          <Twitter />
+        </a>
+
+        <a href={paths.discord} target="_blank" rel="noopener noreferrer">
+          <Discord className="w-7" />
+        </a>
+      </span>
+    </div>
+  </Footer>
+);
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
@@ -51,8 +72,12 @@ export default async function RootLayout({ children }) {
           banner={banner}
           navbar={navbar}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
+          docsRepositoryBase={paths.repo}
           footer={footer}
+          navigation={{
+            next: true,
+            prev: true,
+          }}
         >
           {children}
         </Layout>
