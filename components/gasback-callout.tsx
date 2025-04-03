@@ -1,4 +1,4 @@
-import { Link } from '@components/ui/Link';
+import { Link } from '@components/ui/link';
 import { paths } from '@paths';
 import { Callout } from 'nextra/components';
 
