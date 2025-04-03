@@ -6,4 +6,5 @@ export const paths = {
   repo: 'https://github.com/shape-network/docs',
   twitter: 'https://x.com/Shape_L2',
   discord: 'https://discord.com/invite/shape-l2',
+  gasback: 'https://docs.shape.network/gasback',
 };

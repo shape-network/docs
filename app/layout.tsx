@@ -3,8 +3,8 @@ import { Banner, Head } from 'nextra/components';
 import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
 import './global.css';
-import { paths } from '../paths';
-import { Discord, Logo, Twitter } from '@components/Logos';
+import { paths } from '@paths';
+import { Discord, Logo, Twitter } from '@components/ui/Logos';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
