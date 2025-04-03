@@ -5,5 +5,5 @@ const withNextra = nextra({
 });
 
 export default withNextra({
-  contentDirBasePath: '/',
+  //
 });

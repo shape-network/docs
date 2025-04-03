@@ -2,8 +2,9 @@ import { Footer, Layout, Navbar } from 'nextra-theme-docs';
 import { Banner, Head } from 'nextra/components';
 import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
-import Link from 'next/link';
+import './global.css';
 import { paths } from '../paths';
+import { Logo } from '@components/Logos';
 
 export const metadata = {
   title: 'Shape Docs',
@@ -15,15 +16,25 @@ export const metadata = {
   },
 };
 
+const banner = (
+  <Banner storageKey="banner">
+    <a href={paths.token} target="_blank" rel="noopener noreferrer">
+      $SHAPE is coming soon!
+    </a>
+  </Banner>
+);
 const navbar = (
   <Navbar
-    logo={<b>Shape</b>}
-    // ... Your additional navbar options
+    logoLink={paths.home}
+    logo={
+      <span className="flex items-center gap-2 text-lg">
+        <Logo />
+        Docs
+      </span>
+    }
   />
 );
-const footer = (
-  <Footer>MIT {new Date().getFullYear()} © Pattern Engine.</Footer>
-);
+const footer = <Footer>{new Date().getFullYear()} © Pattern Engine.</Footer>;
 
 export default async function RootLayout({ children }) {
   return (
@@ -33,11 +44,7 @@ export default async function RootLayout({ children }) {
       </Head>
       <body>
         <Layout
-          banner={
-            <Banner storageKey="some-key">
-              <Link href={paths.token}>$SHAPE is coming soon!</Link>
-            </Banner>
-          }
+          banner={banner}
           navbar={navbar}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
