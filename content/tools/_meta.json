@@ -1,8 +1,4 @@
 {
-  "index": {
-    "title": "Overview",
-    "display": "hidden"
-  },
   "account-abstraction": "Account Abstraction",
   "explorers": "Explorers",
   "bridges": "Bridges",
