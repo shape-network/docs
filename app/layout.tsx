@@ -4,7 +4,7 @@ import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
 import './global.css';
 import { paths } from '../paths';
-import { Logo } from '@components/Logos';
+import { Logo, LogoText } from '@components/Logos';
 
 export const metadata = {
   title: 'Shape Docs',
@@ -32,6 +32,8 @@ const navbar = (
         Docs
       </span>
     }
+    projectIcon={<LogoText className="w-10" />}
+    projectLink={paths.shape}
   />
 );
 const footer = <Footer>{new Date().getFullYear()} © Pattern Engine.</Footer>;
