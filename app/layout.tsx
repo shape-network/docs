@@ -5,21 +5,14 @@ import 'nextra-theme-docs/style.css';
 import './global.css';
 import { paths } from '../paths';
 import { Discord, Logo, Twitter } from '@components/Logos';
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     absolute: 'Shape Docs',
     template: '%s - Shape Docs',
   },
   description: 'Shape is the chain for creators, built on top of Ethereum.',
-  openGraph: {
-    title: {
-      absolute: 'Shape Docs',
-      template: '%s - Shape Docs',
-    },
-    description: 'Shape is the chain for creators, built on top of Ethereum.',
-    images: [{ url: 'todo' }],
-  },
 };
 
 const banner = (
@@ -29,6 +22,7 @@ const banner = (
     </a>
   </Banner>
 );
+
 const navbar = (
   <Navbar
     logoLink={paths.home}
@@ -44,6 +38,7 @@ const navbar = (
     projectLink={paths.shape}
   />
 );
+
 const footer = (
   <Footer>
     <div className="flex items-center justify-between gap-8 w-full">
@@ -61,6 +56,7 @@ const footer = (
     </div>
   </Footer>
 );
+
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
