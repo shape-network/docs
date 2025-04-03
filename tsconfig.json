@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@paths": ["paths.ts"]
     },
     "plugins": [{ "name": "next" }]
   },
