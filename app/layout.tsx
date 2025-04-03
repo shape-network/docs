@@ -42,7 +42,7 @@ const navbar = (
 const footer = (
   <Footer>
     <div className="flex items-center justify-between gap-8 w-full">
-      <p>{new Date().getFullYear()} © Pattern Engine.</p>
+      <p>{new Date().getFullYear()} © Shape Factory.</p>
 
       <span className="flex items-center gap-6">
         <a href={paths.twitter} target="_blank" rel="noopener noreferrer">
