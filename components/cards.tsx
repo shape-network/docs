@@ -1,49 +1,32 @@
 import { Cards } from 'nextra/components';
 import { paths } from '@paths';
-import Link from 'next/link';
 import { FC } from 'react';
+import { Card } from '@components/ui/card';
 
-type CustomCardProps = {
-  title: string;
-  href: string;
-  subtitle?: string;
-};
-
-const CustomCard: FC<CustomCardProps> = ({ title, href, subtitle }) => {
-  return (
-    <div className="rounded border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-800 dark:bg-neutral-900">
-      <Link href={href} className="flex size-full flex-col items-start">
-        <span className="font-semibold">{title}</span>
-        {subtitle && <span className="text-sm text-gray-500">{subtitle}</span>}
-      </Link>
-    </div>
-  );
-};
-
-export const ProjectCards = () => {
+export const ProjectCards: FC = () => {
   return (
     <Cards>
-      <CustomCard
+      <Card
         title="OTOM by Kjetil Golid"
         subtitle="Create and experiment with particles called otoms"
         href="/building-on-shape/onchain-compatible/otom"
       />
-      <CustomCard title="Moveable Type by DEAFBEEF" href={paths.moveableType} />
+      <Card title="Moveable Type by DEAFBEEF" href={paths.moveableType} />
     </Cards>
   );
 };
 
-export const SuperchainIncentivesCards = () => {
+export const SuperchainIncentivesCards: FC = () => {
   return (
     <Cards>
-      <CustomCard title="RetroPGF" href={paths.retroPGF} subtitle="Rewarding your onchain impact" />
-      <CustomCard
+      <Card title="RetroPGF" href={paths.retroPGF} subtitle="Rewarding your onchain impact" />
+      <Card
         title="Free contract deployment"
         href={paths.deployForFree}
         subtitle="Claim deployment rebates"
       />
-      <CustomCard title="Gas sponsorship" href={paths.opConsole} subtitle="For your early users" />
-      <CustomCard
+      <Card title="Gas sponsorship" href={paths.opConsole} subtitle="For your early users" />
+      <Card
         title="Launch support"
         href={paths.opConsole}
         subtitle="Amplified marketing through Superchain channels"
