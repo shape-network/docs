@@ -1,18 +1,18 @@
-import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { Banner, Head } from "nextra/components";
-import { getPageMap } from "nextra/page-map";
-import "nextra-theme-docs/style.css";
-import "./global.css";
-import { paths } from "@paths";
-import { Discord, Logo, Twitter } from "@components/ui/logos";
-import { Metadata } from "next";
+import { Footer, Layout, Navbar } from 'nextra-theme-docs';
+import { Banner, Head } from 'nextra/components';
+import { getPageMap } from 'nextra/page-map';
+import 'nextra-theme-docs/style.css';
+import './global.css';
+import { paths } from '@paths';
+import { Discord, Logo, Twitter } from '@components/ui/logos';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Shape Docs",
-    template: "%s - Shape Docs",
+    absolute: 'Shape Docs',
+    template: '%s - Shape Docs',
   },
-  description: "Shape is the chain for creators, built on top of Ethereum.",
+  description: 'Shape is the chain for creators, built on top of Ethereum.',
 };
 
 const banner = (
@@ -32,9 +32,7 @@ const navbar = (
         Docs
       </span>
     }
-    projectIcon={
-      <p className="text-lg font-medium hover:underline">shape.network</p>
-    }
+    projectIcon={<p className="text-lg font-medium hover:underline">shape.network</p>}
     projectLink={paths.shape}
   />
 );
@@ -60,9 +58,7 @@ const footer = (
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head>
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
-      </Head>
+      <Head>{/* Your additional tags should be passed as `children` of `<Head>` element */}</Head>
       <body>
         <Layout
           banner={banner}
@@ -76,8 +72,8 @@ export default async function RootLayout({ children }) {
           }}
           editLink={<span>Edit this page</span>}
           nextThemes={{
-            defaultTheme: "system",
-            attribute: "class",
+            defaultTheme: 'system',
+            attribute: 'class',
           }}
         >
           {children}

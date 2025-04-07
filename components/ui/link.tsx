@@ -1,6 +1,6 @@
-import { cn } from "@lib/utils";
-import NextLink from "next/link";
-import { ReactNode } from "react";
+import { cn } from '@lib/utils';
+import NextLink from 'next/link';
+import { ReactNode } from 'react';
 
 export const Link = ({
   href,
@@ -11,9 +11,9 @@ export const Link = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const isExternal = href.startsWith("http");
+  const isExternal = href.startsWith('http');
 
-  const styles = "font-semibold underline hover:no-underline";
+  const styles = 'font-semibold underline hover:no-underline';
 
   return isExternal ? (
     <a href={href} target="_blank" className={cn(styles, className)}>
