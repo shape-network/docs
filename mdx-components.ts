@@ -5,6 +5,7 @@ import {
   AddToStackCallout,
   NetworkInformationCallout,
   OtomsCallout,
+  TransactionFeesCallout,
 } from '@components/callouts';
 import { ProjectCards } from '@components/cards';
 
@@ -19,6 +20,7 @@ export function useMDXComponents(components) {
     AddToStackCallout,
     NetworkInformationCallout,
     OtomsCallout,
+    TransactionFeesCallout,
     ProjectCards,
   };
 }

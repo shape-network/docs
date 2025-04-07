@@ -47,3 +47,13 @@ export const OtomsCallout = () => {
     </Callout>
   );
 };
+
+export const TransactionFeesCallout = () => {
+  return (
+    <Callout type="info">
+      Shape executes transactions in descending priority order - with higher
+      priority fees taking precedence over lower priority fees - so the priority
+      fee allows you to efficiently express the urgency of your transaction.
+    </Callout>
+  );
+};
