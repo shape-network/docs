@@ -6,8 +6,10 @@ import {
   NetworkInformationCallout,
   OtomsCallout,
   TransactionFeesCallout,
+  RegisterGasbackCallout,
+  AlchemyApiCallout,
 } from '@components/callouts';
-import { ProjectCards } from '@components/cards';
+import { ProjectCards, SuperchainIncentivesCards } from '@components/cards';
 
 const themeComponents = getThemeComponents();
 
@@ -21,6 +23,9 @@ export function useMDXComponents(components) {
     NetworkInformationCallout,
     OtomsCallout,
     TransactionFeesCallout,
+    RegisterGasbackCallout,
     ProjectCards,
+    AlchemyApiCallout,
+    SuperchainIncentivesCards,
   };
 }
