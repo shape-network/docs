@@ -33,13 +33,7 @@ export const LogoText: FC<LogoProps> = ({ className }) => {
       height="1em"
       className={cn('h-12', className)}
     >
-      <circle
-        cx="110.793"
-        cy="110.793"
-        r="110.793"
-        strokeWidth={0}
-        fill="#000"
-      />
+      <circle cx="110.793" cy="110.793" r="110.793" strokeWidth={0} fill="#000" />
       <path
         strokeWidth={0}
         fill="#fff"

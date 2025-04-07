@@ -32,16 +32,14 @@ const navbar = (
         Docs
       </span>
     }
-    projectIcon={
-      <p className="text-lg font-medium hover:underline">shape.network</p>
-    }
+    projectIcon={<p className="text-lg font-medium hover:underline">shape.network</p>}
     projectLink={paths.shape}
   />
 );
 
 const footer = (
   <Footer>
-    <div className="flex items-center justify-between gap-8 w-full">
+    <div className="flex w-full items-center justify-between gap-8">
       <p>{new Date().getFullYear()} © Shape Factory.</p>
 
       <span className="flex items-center gap-6">
@@ -60,9 +58,7 @@ const footer = (
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head>
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
-      </Head>
+      <Head>{/* Your additional tags should be passed as `children` of `<Head>` element */}</Head>
       <body>
         <Layout
           banner={banner}
@@ -75,6 +71,10 @@ export default async function RootLayout({ children }) {
             prev: true,
           }}
           editLink={<span>Edit this page</span>}
+          nextThemes={{
+            defaultTheme: 'system',
+            attribute: 'class',
+          }}
         >
           {children}
         </Layout>

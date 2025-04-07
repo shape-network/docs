@@ -12,7 +12,6 @@ export const paths = {
   alchemyDashboard: 'https://www.alchemy.com/dashboard',
   moveableType: 'https://moveabletype.deafbeef.com',
   retroPGF: 'https://app.optimism.io/retropgf',
-  deployForFree:
-    'https://docs.optimism.io/builders/app-developers/tutorials/deploy-for-free',
+  deployForFree: 'https://docs.optimism.io/builders/app-developers/tutorials/deploy-for-free',
   opConsole: 'https://console.optimism.io/',
 };
