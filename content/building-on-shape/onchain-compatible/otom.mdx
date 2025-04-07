@@ -1,3 +1,242 @@
-# OTOM
+# OTOM by Kjetil Golid
 
-TODO
+Create and experiment with particles called otoms
+
+**Website**: [otom.xyz](https://otom.xyz)
+
+**Repo:** [github.com/shape-network/otom-contracts](https://github.com/shape-network/otom-contracts)
+
+There are four main actions a chemist can take within the otoms universe.
+
+1. **Mine for Otoms**
+2. **Annihilate said Otoms and receive Energy (ERC20)**
+3. **Use Energy along with multiple Otoms to initiate a reaction**
+4. **Analyze reactions and receive molocules (Chemists can analyze multiple unanalyzed reactions in a single transaction)**
+
+## Contracts
+
+| Link                                                                                                              | Description                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [**Otoms**](https://shapescan.xyz/address/0x2f9810789aebBB6cdC6c0332948fF3B6D11121E3?tab=contract)                | Main NFT contract for minting otoms                                                                                     |
+| [**OtomsDatabase**](https://shapescan.xyz/address/0x953761a771d6Ad9F888e41b3E7c9338a32b1A346?tab=contract)        | DB used for storing information related to things like; tokenURI, Molecules, Who first discovered a Molecule, Universes |
+| [**OtomsReactionOutputs**](https://shapescan.xyz/address/0x7d5A370F277e1847E4f768a88758237c6E3456eD?tab=contract) | Secondary NFT contract of unextracted Molecules                                                                         |
+| [**Energy**](https://shapescan.xyz/address/0x42276dF82BAb34c3CCcA9e5c058b6ff7EA4d07e3?tab=contract)               | Fungible token used in reactions                                                                                        |
+| [**Reactor**](https://shapescan.xyz/address/0xB8874fCE9b702B191C306A21c7A4a101FB14a0fc?tab=contract)              | Main reactor contract, used to initialize and analyze reactions                                                         |
+| [**Annihilator**](https://shapescan.xyz/address/0xca3088aedaAB138cAB3F0c135ceD77aF1a8b9063?tab=contract)          | Used to convert NFT Otoms into fungible Energy                                                                          |
+
+## Functionality
+
+### Mining Otoms
+
+`Otoms.sol`
+
+```solidity
+/**
+ * @dev Mines atoms based on the provided payloads.
+ * @param _payloads The payloads to mine atoms from.
+ * @return The token IDs of the mined atoms.
+ */
+function mine(
+   MiningPayload[] calldata payloads
+) external returns (uint256[] memory);
+```
+
+### Mining Payload
+
+`IOtoms.sol`
+
+```solidity
+struct MiningPayload {
+    Molecule minedMolecule;
+    bytes32 miningHash;
+    string tokenUri;
+    bytes32 universeHash;
+    uint256 expiry;
+    bytes signature;
+}
+```
+
+### Reacting with Otoms
+
+`Reactor.sol`
+
+```solidity
+/**
+ * @dev Initiates a reaction with the provided atom IDs and energy amount.
+ * @param atomIds The token IDs of the atoms to be used in the reaction.
+ * @param energyAmount The amount of energy to be used in the reaction.
+ * @return The token ID of the output of the reaction.
+ */
+function initiateReaction(
+   uint256[] memory atomIds,
+   uint256 energyAmount
+) external returns (uint256);
+
+/**
+ * @dev Analyses the provided reaction results and returns
+ * the output of the reaction.
+ * @param reactionResults The results of the reaction.
+ * @param expiry The expiry time of the reaction.
+ * @param signature The signature of the reaction.
+ * @return The output of the reaction.
+ */
+function analyseReactions(
+   ReactionResult[] memory reactionResults,
+   uint256 expiry,
+   bytes memory signature
+) external;
+```
+
+### Annihilating Otoms
+
+`Annihilator.sol`
+
+```solidity
+/**
+ * @dev Annihilates the provided atom IDs.
+ * @param atomIds The token IDs of the atoms to be annihilated.
+ * @return The amount of energy produced by the annihilations.
+ */
+function annihilate(
+   uint256[] memory atomIds
+) external nonReentrant returns (uint256)
+```
+
+## Structs
+
+`IOtomsDatabase.sol`
+
+```solidity
+struct Molecule {
+    string id;
+    string name;
+    bytes32 universeHash;
+    uint256 activationEnergy;
+    uint256 radius;
+    Bond bond;
+    Atom[] givingAtoms;
+    Atom[] receivingAtoms;
+    uint256 electricalConductivity;
+    uint256 thermalConductivity;
+    uint256 toughness;
+    uint256 hardness;
+    uint256 ductility;
+}
+
+struct Atom {
+    uint256 radius;
+    uint256 volume;
+    uint256 mass;
+    uint256 density;
+    uint256 electronegativity;
+    bool metallic;
+    string name;
+    string series;
+    uint256 periodicTableX;
+    uint256 periodicTableY;
+    AtomStructure structure;
+    Nucleus nucleus;
+}
+```
+
+<OtomsCallout />
+
+## Data
+
+`OtomsDatabase.sol`
+
+```solidity
+function getMoleculeByTokenId(
+    uint256 tokenId
+) external view returns (Molecule memory);
+
+function getUniverseInformation(
+    bytes32 universeHash
+) external view returns (UniverseInformation memory);
+
+function getMoleculesDiscovered(
+    bytes32 universeHash
+) external view returns (Molecule[] memory);
+
+function getMoleculesDiscoveredPaginated(
+    bytes32 universeHash,
+    uint256 offset,
+    uint256 limit
+) external view returns (Molecule[] memory molecules, uint256 total);
+
+function activeUniverses() external view returns (bytes32[] memory);
+```
+
+### Otoms
+
+`Otoms.sol`
+
+```solidity
+function moleculeIsAtom(
+    Molecule memory _molecule
+) external pure returns (bool);
+```
+
+### ReactionOutputs
+
+`OtomsReactionOutputs.sol`
+
+```solidity
+function getReactionOutputData(
+    uint256 tokenId
+) external view returns (ReactionOutputData memory);
+```
+
+## Encoding Utilities
+
+`IOtomsEncoder.sol`
+
+```solidity
+function encodeMolecule(
+    Molecule memory _newMolecule
+) external pure returns (bytes32);
+
+function encodeAtom(
+    Atom memory _newAtom
+) external pure returns (bytes32);
+
+function encodeStructure(
+    AtomStructure memory _newStructure
+) external pure returns (bytes32);
+
+function encodeNucleus(
+    Nucleus memory _newNucleus
+) external pure returns (bytes32);
+
+function encodeUniverseInformation(
+    UniverseInformation memory _universeInformation
+) external pure returns (bytes32);
+
+function getSeedUniverseMessageHash(
+    UniverseInformation memory _universeInformation,
+    uint256 expiry,
+    address sender
+) external view returns (bytes32);
+
+function getMiningMessageHash(
+    Molecule memory _newAtom,
+    bytes32 _miningHash,
+    string memory _tokenUri,
+    bytes32 _universeHash,
+    uint256 expiry,
+    address sender
+) external view returns (bytes32);
+
+function getMiningHash(
+    address _chemist,
+    bytes32 _universeHash,
+    uint256 _nonce
+) external pure returns (bytes32);
+
+function getMultipleMiningHashes(
+    address _chemist,
+    bytes32 _universeHash,
+    uint256 _startingNonce,
+    uint256 _count
+) external pure returns (bytes32[] memory);
+```

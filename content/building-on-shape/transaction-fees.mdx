@@ -1,3 +1,42 @@
 # Transaction Fees
 
-TODO
+Learn how gas fees work on Shape and where they go.
+
+Shape transaction fees are paid in **Ether** ("ETH").
+
+Fees on Shape are much cheaper than what you'd pay for an equivalent transaction on Ethereum.
+
+Every Shape transaction involves two separate costs: security ("L1 Fee") and execution ("L2 Fee").
+
+## L1 Fee = Security
+
+The L1 Fee is paid to ensure your transaction's data is published to Ethereum, guaranteeing its availability for nodes to download and execute. This is crucial for maintaining the security properties of Shape.
+
+This fee varies depending on the current base fee on Ethereum.
+
+### Where do L1 Fees go?
+
+L1 Fees are used to cover costs paid to Ethereum validators.
+
+## L2 Fee = Execution
+
+The L2 Fee is paid to execute your transaction on Shape. It has two components: a base fee and a priority fee.
+
+The **base fee** is the minimum required for your transaction to be included in a block.
+
+The **priority fee** is _optional_, and you decide how much to pay if you choose to include it.
+
+<TransactionFeesCallout />
+
+The L2 Fee is also known as the **Sequencer Fee**. You can find more information about transaction fee calculation in the [Optimism docs](https://docs.optimism.io/stack/transactions/fees).
+
+### Where do L2 Fees go?
+
+**Shape directs 80% of ETH collected from L2 Fees back to the contracts that generated the activity**, ensuring the creators and platforms that thrive on the network share in its success.
+
+<GasbackCallout />
+
+For the remaining 20%:
+
+- 15% goes to the Optimism Collective to fund public goods
+- 5% goes to infrastructure and the Shape Foundation during the early stages of the network

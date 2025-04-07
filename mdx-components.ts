@@ -4,7 +4,12 @@ import {
   GasbackCallout,
   AddToStackCallout,
   NetworkInformationCallout,
+  OtomsCallout,
+  TransactionFeesCallout,
+  RegisterGasbackCallout,
+  AlchemyApiCallout,
 } from '@components/callouts';
+import { ProjectCards, SuperchainIncentivesCards } from '@components/cards';
 
 const themeComponents = getThemeComponents();
 
@@ -16,5 +21,11 @@ export function useMDXComponents(components) {
     StackCallout,
     AddToStackCallout,
     NetworkInformationCallout,
+    OtomsCallout,
+    TransactionFeesCallout,
+    RegisterGasbackCallout,
+    ProjectCards,
+    AlchemyApiCallout,
+    SuperchainIncentivesCards,
   };
 }
