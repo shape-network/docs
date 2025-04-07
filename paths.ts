@@ -9,5 +9,10 @@ export const paths = {
   gasback: 'https://docs.shape.network/gasback',
   stack: 'https://stack.shape.network',
   alchemyNode: 'https://www.alchemy.com/supernode',
+  alchemyDashboard: 'https://www.alchemy.com/dashboard',
   moveableType: 'https://moveabletype.deafbeef.com',
+  retroPGF: 'https://app.optimism.io/retropgf',
+  deployForFree:
+    'https://docs.optimism.io/builders/app-developers/tutorials/deploy-for-free',
+  opConsole: 'https://console.optimism.io/',
 };

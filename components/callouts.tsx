@@ -57,3 +57,24 @@ export const TransactionFeesCallout = () => {
     </Callout>
   );
 };
+
+export const RegisterGasbackCallout = () => {
+  return (
+    <Callout type="info">
+      Learn how to{' '}
+      <Link href="/tutorials/registering-your-contract-for-gasback">
+        register your contracts for Gasback here
+      </Link>
+      .
+    </Callout>
+  );
+};
+
+export const AlchemyApiCallout = () => {
+  return (
+    <Callout type="info">
+      Visit your <Link href={paths.alchemyDashboard}>Alchemy dashboard</Link>{' '}
+      and start building now!
+    </Callout>
+  );
+};
