@@ -1,18 +1,18 @@
-import { Footer, Layout, Navbar } from 'nextra-theme-docs';
-import { Banner, Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import 'nextra-theme-docs/style.css';
-import './global.css';
-import { paths } from '@paths';
-import { Discord, Logo, Twitter } from '@components/ui/logos';
-import { Metadata } from 'next';
+import { Footer, Layout, Navbar } from "nextra-theme-docs";
+import { Banner, Head } from "nextra/components";
+import { getPageMap } from "nextra/page-map";
+import "nextra-theme-docs/style.css";
+import "./global.css";
+import { paths } from "@paths";
+import { Discord, Logo, Twitter } from "@components/ui/logos";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Shape Docs',
-    template: '%s - Shape Docs',
+    absolute: "Shape Docs",
+    template: "%s - Shape Docs",
   },
-  description: 'Shape is the chain for creators, built on top of Ethereum.',
+  description: "Shape is the chain for creators, built on top of Ethereum.",
 };
 
 const banner = (
@@ -41,7 +41,7 @@ const navbar = (
 
 const footer = (
   <Footer>
-    <div className="flex items-center justify-between gap-8 w-full">
+    <div className="flex w-full items-center justify-between gap-8">
       <p>{new Date().getFullYear()} © Shape Factory.</p>
 
       <span className="flex items-center gap-6">
@@ -75,6 +75,10 @@ export default async function RootLayout({ children }) {
             prev: true,
           }}
           editLink={<span>Edit this page</span>}
+          nextThemes={{
+            defaultTheme: "system",
+            attribute: "class",
+          }}
         >
           {children}
         </Layout>

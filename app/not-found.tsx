@@ -1,4 +1,4 @@
-import { NotFoundPage } from 'nextra-theme-docs';
+import { NotFoundPage } from "nextra-theme-docs";
 
 export default function NotFound() {
   return (

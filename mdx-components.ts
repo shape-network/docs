@@ -1,4 +1,4 @@
-import { useMDXComponents as getThemeComponents } from 'nextra-theme-docs';
+import { useMDXComponents as getThemeComponents } from "nextra-theme-docs";
 import {
   StackCallout,
   GasbackCallout,
@@ -8,8 +8,8 @@ import {
   TransactionFeesCallout,
   RegisterGasbackCallout,
   AlchemyApiCallout,
-} from '@components/callouts';
-import { ProjectCards, SuperchainIncentivesCards } from '@components/cards';
+} from "@components/callouts";
+import { ProjectCards, SuperchainIncentivesCards } from "@components/cards";
 
 const themeComponents = getThemeComponents();
 

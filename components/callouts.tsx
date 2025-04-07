@@ -1,6 +1,6 @@
-import { Link } from '@components/ui/link';
-import { paths } from '@paths';
-import { Callout } from 'nextra/components';
+import { Link } from "@components/ui/link";
+import { paths } from "@paths";
+import { Callout } from "nextra/components";
 
 export const StackCallout = () => {
   return (
@@ -14,7 +14,7 @@ export const AddToStackCallout = () => {
   return (
     <Callout type="info">
       Do you have a project you&apos;d like to make part of the Stack? <br />
-      Reach out on <Link href={paths.twitter}>Twitter/X</Link> or in{' '}
+      Reach out on <Link href={paths.twitter}>Twitter/X</Link> or in{" "}
       <Link href={paths.discord}>Discord</Link> to let us know.
     </Callout>
   );
@@ -23,7 +23,7 @@ export const AddToStackCallout = () => {
 export const GasbackCallout = () => {
   return (
     <Callout type="info">
-      Learn more about how this works in{' '}
+      Learn more about how this works in{" "}
       <Link href={paths.gasback}>Gasback</Link>.
     </Callout>
   );
@@ -61,7 +61,7 @@ export const TransactionFeesCallout = () => {
 export const RegisterGasbackCallout = () => {
   return (
     <Callout type="info">
-      Learn how to{' '}
+      Learn how to{" "}
       <Link href="/tutorials/registering-your-contract-for-gasback">
         register your contracts for Gasback here
       </Link>
@@ -73,7 +73,7 @@ export const RegisterGasbackCallout = () => {
 export const AlchemyApiCallout = () => {
   return (
     <Callout type="info">
-      Visit your <Link href={paths.alchemyDashboard}>Alchemy dashboard</Link>{' '}
+      Visit your <Link href={paths.alchemyDashboard}>Alchemy dashboard</Link>{" "}
       and start building now!
     </Callout>
   );

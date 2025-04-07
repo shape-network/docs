@@ -1,7 +1,7 @@
-import { Cards } from 'nextra/components';
-import { paths } from '@paths';
-import Link from 'next/link';
-import { FC } from 'react';
+import { Cards } from "nextra/components";
+import { paths } from "@paths";
+import Link from "next/link";
+import { FC } from "react";
 
 type CustomCardProps = {
   title: string;
@@ -11,10 +11,10 @@ type CustomCardProps = {
 
 const CustomCard: FC<CustomCardProps> = ({ title, href, subtitle }) => {
   return (
-    <div className="border border-gray-200 rounded p-4 bg-gray-100">
-      <Link href={href} className="size-full flex flex-col items-start">
+    <div className="rounded border border-gray-200 bg-gray-100 p-4 dark:bg-red-500">
+      <Link href={href} className="flex size-full flex-col items-start">
         <span className="font-semibold">{title}</span>
-        {subtitle && <span className="text-gray-500 text-sm">{subtitle}</span>}
+        {subtitle && <span className="text-sm text-gray-500">{subtitle}</span>}
       </Link>
     </div>
   );
