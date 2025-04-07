@@ -1,3 +1,35 @@
 # Run a Node
 
-TODO
+Learn how to run your own Shape Mainnet and Shape Sepolia nodes.
+
+Follow [these instructions](https://github.com/ethereum-optimism/optimism/blob/develop/specs/rollup-node.md) to learn how to run your own Shape node.
+
+The process is the same as running a standard op-node, but using a different `rollup.json` and `genesis.json`.
+
+## Shape Mainnet
+
+[rollup.json](https://arweave.net/W6Ma1DIeToKUu2AqA_bpj9mNc9bjktt7ea89GsHBMQ0)
+
+[genesis.json](https://arweave.net/DbYRNWNDV92JYJnRv_Xi4KJ2eT2b5vgqcuHVTNyJmz4)
+
+## Shape Sepolia
+
+[rollup.json](https://arweave.net/lBruv0L6HqP-AroUVb6D-EEmAlCFFPpv_Aru0n7fjtg)
+
+[genesis.json](https://arweave.net/Dtjpd_ufEQ5MJP75I8ObVIwjfQ3C2Y8xakQLo9Gl13A)
+
+## Troubleshooting
+
+If your node is stalling, failing to find peers, or otherwise unresponsive, try passing the bootnode enodes in directly with `--p2p.bootnodes` in op-node:
+
+### Shape-Sepolia - op-node bootnodes
+
+```json
+enode://34fc07c447b843f3915f72cae27daeda7f2f8c3ea4b9132aed188387d3208d1d5cd7eeea58d30d038c14f985a5b108ad6b2172815ed8b757c9de9f609741b2a6@34.228.9.78:0?discport=30301,enode://61841b7682f808f5ce8222f15d7de7f118a2c2c3e342fe42ea41e987ae22fb90e49ef2b5f394897e791c33c6fc59d7ad064851ee653badb2d6ece7a94040944b@54.91.75.177:0?discport=30301
+```
+
+### Shape-Mainnet - op-node bootnodes
+
+```json
+enode://ae31be7c6596f4bc3657f90b65a1569c7b0db10c976649f06fe5cfb26139064d78d22b41aede293aa7358fc336d086051ac7fce78f063dce89e1da19c7b88aee@34.228.226.23:0?discport=30301,enode://0bea78f02c9bee58326b3a612dae63dc5a0193fb3dfc9be687c9757d25606405ef9f87810157598fce35688bdb5b3834dc6283afab6dc5774abbd6c5a7b17cea@3.85.27.162:0?discport=30301
+```
