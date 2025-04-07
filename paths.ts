@@ -9,4 +9,5 @@ export const paths = {
   gasback: 'https://docs.shape.network/gasback',
   stack: 'https://stack.shape.network',
   alchemyNode: 'https://www.alchemy.com/supernode',
+  moveableType: 'https://moveabletype.deafbeef.com',
 };

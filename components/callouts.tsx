@@ -38,3 +38,12 @@ export const NetworkInformationCallout = () => {
     </Callout>
   );
 };
+
+export const OtomsCallout = () => {
+  return (
+    <Callout type="info">
+      We&apos;ve included the three main structs used for mining otoms. Check
+      out `IOtoms.sol` and `IOtomsDatabase.sol` for more info.
+    </Callout>
+  );
+};

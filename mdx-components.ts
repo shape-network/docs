@@ -4,7 +4,9 @@ import {
   GasbackCallout,
   AddToStackCallout,
   NetworkInformationCallout,
+  OtomsCallout,
 } from '@components/callouts';
+import { ProjectCards } from '@components/cards';
 
 const themeComponents = getThemeComponents();
 
@@ -16,5 +18,7 @@ export function useMDXComponents(components) {
     StackCallout,
     AddToStackCallout,
     NetworkInformationCallout,
+    OtomsCallout,
+    ProjectCards,
   };
 }
