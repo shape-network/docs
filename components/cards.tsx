@@ -1,11 +1,7 @@
-'use client';
-
 import { Cards } from 'nextra/components';
 import { paths } from '@paths';
 import Link from 'next/link';
 import { FC } from 'react';
-import { useTheme } from 'nextra-theme-docs';
-import { cn } from '@lib/utils';
 
 type CustomCardProps = {
   title: string;
@@ -14,16 +10,8 @@ type CustomCardProps = {
 };
 
 const CustomCard: FC<CustomCardProps> = ({ title, href, subtitle }) => {
-  // FIXME: dark class modifier
-  const { theme } = useTheme();
-
   return (
-    <div
-      className={cn(
-        'rounded border p-4',
-        theme === 'dark' ? 'border-neutral-800 bg-neutral-900' : 'border-neutral-200 bg-neutral-100'
-      )}
-    >
+    <div className="rounded border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-800 dark:bg-neutral-900">
       <Link href={href} className="flex size-full flex-col items-start">
         <span className="font-semibold">{title}</span>
         {subtitle && <span className="text-sm text-gray-500">{subtitle}</span>}
