@@ -1,0 +1,117 @@
+# Registering programmatically
+
+You can register your contract for Gasback programmatically by interacting with the Gasback registration contract directly from your own smart contract.
+
+## Prerequisites
+
+- Your contract should be deployed on the Shape network
+- You should have the necessary permissions to call functions from your contract
+
+## Registration Steps
+
+1. **Import the IGasbackRegistration interface** in your contract:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+interface IGasbackRegistration {
+    function registerContract(
+        address contractAddress,
+        string memory name,
+        string memory description,
+        uint8 category
+    ) external returns (bool);
+}
+```
+
+2. **Create a function in your contract to handle registration**:
+
+```solidity
+// Address of the Gasback registration contract on Shape
+address constant GASBACK_REGISTRATION_CONTRACT = 0x1234...;  // Replace with the actual address
+
+function registerForGasback(
+    string memory name,
+    string memory description,
+    uint8 category
+) external onlyOwner {
+    IGasbackRegistration registrationContract = IGasbackRegistration(GASBACK_REGISTRATION_CONTRACT);
+
+    bool success = registrationContract.registerContract(
+        address(this),
+        name,
+        description,
+        category
+    );
+
+    require(success, "Registration failed");
+}
+```
+
+3. **Call the registration function** after deploying your contract
+
+## Category Codes
+
+When registering, you'll need to specify a category code for your contract:
+
+- 0: DeFi
+- 1: Gaming
+- 2: Marketplace
+- 3: Social
+- 4: NFT
+- 5: Infrastructure
+- 6: Other
+
+## Example Usage
+
+Here's an example of how you might implement this in a complete contract:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+interface IGasbackRegistration {
+    function registerContract(
+        address contractAddress,
+        string memory name,
+        string memory description,
+        uint8 category
+    ) external returns (bool);
+}
+
+contract MyContract {
+    address public owner;
+    address constant GASBACK_REGISTRATION_CONTRACT = 0x1234...;  // Replace with actual address
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    function registerForGasback(
+        string memory name,
+        string memory description,
+        uint8 category
+    ) external onlyOwner {
+        IGasbackRegistration registrationContract = IGasbackRegistration(GASBACK_REGISTRATION_CONTRACT);
+
+        bool success = registrationContract.registerContract(
+            address(this),
+            name,
+            description,
+            category
+        );
+
+        require(success, "Registration failed");
+    }
+
+    // Your contract's functionality here
+}
+```
+
+After registration, your contract will need to be approved by the Shape team before it becomes eligible for Gasback rewards.
