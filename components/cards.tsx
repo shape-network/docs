@@ -180,3 +180,42 @@ export const NodeProvidersCards: FC = () => {
     </Cards>
   );
 };
+
+export const SafesAndAssetSecurityCards: FC = () => {
+  return (
+    <Cards>
+      <Card
+        title="Safe"
+        subtitle="A decentralized custody protocol and collective asset management platform"
+        href="https://safe.shape.network"
+      />
+      <Card
+        title="Delegate"
+        subtitle="Claim airdrops, mint NFTs, and prove ownership via your hot wallet"
+        href="https://delegate.xyz"
+      />
+    </Cards>
+  );
+};
+
+export const SybilResistanceCards: FC = () => {
+  return (
+    <Cards>
+      <Card
+        title="Passport"
+        subtitle="A tool for dApps to defend against sybils while preserving user privacy"
+        href="https://app.passport.xyz/#/shape/"
+      />
+      <Card
+        title="Premint"
+        subtitle="Create allowlists tailored to your requirements"
+        href="https://www.premint.xyz/"
+      />
+      <Card
+        title="Crossmint Verifiable Credentials"
+        subtitle="Issue and verify credentials at scale"
+        href="https://www.crossmint.com/products/verifiable-credentials"
+      />
+    </Cards>
+  );
+};
