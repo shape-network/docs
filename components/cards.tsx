@@ -219,3 +219,15 @@ export const SybilResistanceCards: FC = () => {
     </Cards>
   );
 };
+
+export const RegisteringContractGasbackCards: FC = () => {
+  return (
+    <Cards>
+      <Card title="Using the dashboard" href="/tutorials/registering-contract-gasback/dashboard" />
+      <Card
+        title="Programmatically"
+        href="/tutorials/registering-contract-gasback/programmatically"
+      />
+    </Cards>
+  );
+};

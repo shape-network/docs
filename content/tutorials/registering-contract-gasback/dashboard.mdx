@@ -1,0 +1,65 @@
+# Registering via the Dashboard
+
+This tutorial will guide you through the process of registering your smart contract for gasback using the Gasback Dashboard UI.
+
+## Prerequisites
+
+1. Your smart contract must be deployed on Shape.
+2. You need access to a Web3 wallet (like MetaMask) with the account that owns the smart contract you want to register.
+3. Your smart contract must have an owner() function which returns the address of the account you will connect to the dashboard
+
+## Step 1: Access the Dashboard
+
+Open your web browser and navigate to the [Gasback dashboard](https://gasback.shape.network/).
+
+![Gasback Dashboard](/gasback-dashboard-1.webp)
+
+## Step 2: Connect Your Wallet
+
+1. Click the "Connect Wallet" button in the top right corner of the page.
+2. A popup will appear with various wallet options. Select your preferred wallet (e.g., MetaMask).
+3. Follow the prompts in your wallet to connect to the site and select the account you want to use.
+
+![Connect Wallet](/gasback-dashboard-2.webp)
+
+## Step 3: View Your Gasback Dashboard
+
+1. Once connected, you'll see your Gasback dashboard.
+2. If you haven't registered any contracts yet, you'll see a hero banner explaining that you don't have a gasback NFT yet.
+
+![Gasback Dashboard](/gasback-dashboard-3.webp)
+
+## Step 4: Initiate registration and enter contract details
+
+1. Click the "Register" button in the hero banner or the header. and a popup window titled "Register a new smart contract" will appear.
+2. In the "Contract Address" field, enter the address of the smart contract you want to register for gasback.
+3. The "NFT Recipient" field should automatically populate with your connected wallet address. This is the address that will receive the gasback NFT. You can change this if you want the NFT to go to a different address.
+4. Click “Register”
+
+![Register Contract](/gasback-dashboard-4.webp)
+
+## Step 5: Confirm Registration
+
+1. Read the warning message and double-check that all the information is correct.
+2. Click the "Confirm" button.
+3. Your wallet will prompt you to confirm the transaction. Review the details and confirm the transaction.
+4. Wait for the transaction to be processed and confirmed on the blockchain.
+
+![Confirm Registration](/gasback-dashboard-5.webp)
+
+## Step 6: Verify Registration
+
+1. After the transaction is confirmed, the dashboard should update to reflect your newly registered contract.
+2. You did it! You should see your unique gasback NFT that was generated onchain. The art on your NFT will evolve as your token accrues gasback.
+
+![Verify Registration](/gasback-dashboard-6.webp)
+
+## Step 7: Managing Your Gasback
+
+Your dashboard will now display any gasback activity related to your registered contract. Activity can take up to 10 minutes to show up here. Registration itself earns you gasback, so you've already started your journey!
+
+If you have more contracts you want to register for Gasback, you can click the “manage” button and add their contract addresses to the field, and all the gasback earned by those contracts will be claimable with a single NFT.
+
+![Manage Gasback](/gasback-dashboard-7.webp)
+
+That's it! If you're less of a UI person, check out the next section to see how to do this programmatically.
