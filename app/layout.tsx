@@ -6,6 +6,8 @@ import './global.css';
 import { paths } from '@paths';
 import { Discord, Logo, Twitter } from '@components/ui/logos';
 import { Metadata } from 'next';
+import { CSPostHogProvider } from 'app/providers';
+import PostHogPageView from '@components/analytics';
 
 export const metadata: Metadata = {
   title: {
@@ -58,26 +60,36 @@ const footer = (
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head>{/* Your additional tags should be passed as `children` of `<Head>` element */}</Head>
+      <Head
+        backgroundColor={{
+          light: '#fff',
+        }}
+      >
+        {/* Your additional tags should be passed as `children` of `<Head>` element */}
+      </Head>
+
       <body>
-        <Layout
-          banner={banner}
-          navbar={navbar}
-          pageMap={await getPageMap()}
-          docsRepositoryBase={paths.repoBase}
-          footer={footer}
-          navigation={{
-            next: true,
-            prev: true,
-          }}
-          editLink={<span>Edit this page</span>}
-          nextThemes={{
-            defaultTheme: 'system',
-            attribute: 'class',
-          }}
-        >
-          {children}
-        </Layout>
+        <CSPostHogProvider>
+          <Layout
+            banner={banner}
+            navbar={navbar}
+            pageMap={await getPageMap()}
+            docsRepositoryBase={paths.repoBase}
+            footer={footer}
+            navigation={{
+              next: true,
+              prev: true,
+            }}
+            editLink={<span>Edit this page</span>}
+            nextThemes={{
+              defaultTheme: 'system',
+              attribute: 'class',
+            }}
+          >
+            <PostHogPageView />
+            {children}
+          </Layout>
+        </CSPostHogProvider>
       </body>
     </html>
   );
