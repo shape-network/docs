@@ -30,9 +30,7 @@ There are four main actions a chemist can take within the otoms universe.
 
 ### Mining Otoms
 
-`Otoms.sol`
-
-```solidity
+```solidity filename="Otoms.sol"
 /**
  * @dev Mines atoms based on the provided payloads.
  * @param _payloads The payloads to mine atoms from.
@@ -45,9 +43,7 @@ function mine(
 
 ### Mining Payload
 
-`IOtoms.sol`
-
-```solidity
+```solidity filename="IOtoms.sol"
 struct MiningPayload {
     Molecule minedMolecule;
     bytes32 miningHash;
@@ -60,9 +56,7 @@ struct MiningPayload {
 
 ### Reacting with Otoms
 
-`Reactor.sol`
-
-```solidity
+```solidity filename="Reactor.sol"
 /**
  * @dev Initiates a reaction with the provided atom IDs and energy amount.
  * @param atomIds The token IDs of the atoms to be used in the reaction.
@@ -91,9 +85,7 @@ function analyseReactions(
 
 ### Annihilating Otoms
 
-`Annihilator.sol`
-
-```solidity
+```solidity filename="Annihilator.sol"
 /**
  * @dev Annihilates the provided atom IDs.
  * @param atomIds The token IDs of the atoms to be annihilated.
@@ -106,9 +98,7 @@ function annihilate(
 
 ## Structs
 
-`IOtomsDatabase.sol`
-
-```solidity
+```solidity filename="IOtomsDatabase.sol"
 struct Molecule {
     string id;
     string name;
@@ -145,9 +135,7 @@ struct Atom {
 
 ## Data
 
-`OtomsDatabase.sol`
-
-```solidity
+```solidity filename="OtomsDatabase.sol"
 function getMoleculeByTokenId(
     uint256 tokenId
 ) external view returns (Molecule memory);
@@ -171,9 +159,7 @@ function activeUniverses() external view returns (bytes32[] memory);
 
 ### Otoms
 
-`Otoms.sol`
-
-```solidity
+```solidity filename="Otoms.sol"
 function moleculeIsAtom(
     Molecule memory _molecule
 ) external pure returns (bool);
@@ -181,9 +167,7 @@ function moleculeIsAtom(
 
 ### ReactionOutputs
 
-`OtomsReactionOutputs.sol`
-
-```solidity
+```solidity filename="OtomsReactionOutputs.sol"
 function getReactionOutputData(
     uint256 tokenId
 ) external view returns (ReactionOutputData memory);
@@ -191,9 +175,7 @@ function getReactionOutputData(
 
 ## Encoding Utilities
 
-`IOtomsEncoder.sol`
-
-```solidity
+```solidity filename="IOtomsEncoder.sol"
 function encodeMolecule(
     Molecule memory _newMolecule
 ) external pure returns (bytes32);
