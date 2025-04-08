@@ -17,14 +17,6 @@ export const metadata: Metadata = {
   description: 'Shape is the chain for creators, built on top of Ethereum.',
 };
 
-const banner = (
-  <Banner storageKey="banner">
-    <a href={paths.token} target="_blank" rel="noopener noreferrer">
-      $SHAPE is coming soon!
-    </a>
-  </Banner>
-);
-
 const navbar = (
   <Navbar
     logoLink={paths.home}
@@ -71,7 +63,6 @@ export default async function RootLayout({ children }) {
       <body>
         <CSPostHogProvider>
           <Layout
-            banner={banner}
             navbar={navbar}
             pageMap={await getPageMap()}
             docsRepositoryBase={paths.repoBase}
