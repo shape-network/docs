@@ -76,3 +76,11 @@ export const AlchemyApiCallout = () => {
     </Callout>
   );
 };
+
+export const FaucetsCallout = () => {
+  return (
+    <Callout type="info">
+      You can also <Link href="/tools/bridges">bridge Sepolia ETH</Link> to get started.
+    </Callout>
+  );
+};
