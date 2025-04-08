@@ -84,3 +84,21 @@ export const FaucetsCallout = () => {
     </Callout>
   );
 };
+
+export const ProgrammaticallyRegisterGasbackExampleACallout = () => {
+  return (
+    <Callout type="warning">
+      If your contract tries to register in the constructor, the call will fail. Registration must
+      happen after contract construction.
+    </Callout>
+  );
+};
+
+export const ProgrammaticallyRegisterGasbackExampleBCallout = () => {
+  return (
+    <Callout type="warning">
+      When implementing this pattern a function protected by some form of access control that
+      withdraws the NFT from your contract is a great fallback option.
+    </Callout>
+  );
+};
