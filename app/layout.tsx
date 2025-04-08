@@ -64,7 +64,7 @@ export default async function RootLayout({ children }) {
           banner={banner}
           navbar={navbar}
           pageMap={await getPageMap()}
-          docsRepositoryBase={paths.repo}
+          docsRepositoryBase={paths.repoBase}
           footer={footer}
           navigation={{
             next: true,
