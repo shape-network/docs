@@ -165,6 +165,7 @@ export const FaucetsCards: FC = () => {
   return (
     <Cards>
       <Card title="Alchemy Faucet" href="https://www.alchemy.com/faucets/shape-sepolia" />
+      <Card title="Optimism Faucet" href="https://console.optimism.io/faucet" />
     </Cards>
   );
 };
