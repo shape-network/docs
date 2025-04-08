@@ -14,6 +14,7 @@ if (typeof window !== 'undefined') {
     },
   });
 }
+
 export const CSPostHogProvider = ({ children }: PropsWithChildren) => {
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 };
