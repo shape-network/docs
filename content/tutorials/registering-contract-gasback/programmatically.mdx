@@ -1,117 +1,167 @@
-# Registering programmatically
+import {
+  ProgrammaticallyRegisterGasbackExampleACallout,
+  ProgrammaticallyRegisterGasbackExampleBCallout,
+} from '@components/callouts';
 
-You can register your contract for Gasback programmatically by interacting with the Gasback registration contract directly from your own smart contract.
+# Registering Programmatically
+
+This tutorial will guide you through the process of registering your smart contract for gasback programmatically. The tutorial walks through 3 different approaches you can use, with full example contracts.
 
 ## Prerequisites
 
-- Your contract should be deployed on the Shape network
-- You should have the necessary permissions to call functions from your contract
+1. Some familiarity with Solidity and Node JS.
+2. If you want to actually deploy the contracts we'll go through so that you can get hands on, download the example repo [here](https://github.com/shape-network/gasback-tutorial).
+3. (Optional) If you do decide to deploy the contracts and register, you'll need some Shape Sepolia ETH which you can get from the [Superchain faucet](https://console.optimism.io/faucet). You will then need to create a `.env` file according to the `.env.example` file in the repo.
 
-## Registration Steps
+## Example A: Registering inside the contract and sending the Gasback NFT to the contract owner to hold
 
-1. **Import the IGasbackRegistration interface** in your contract:
+The code snippet below is the complete implementation of a contract called ExampleA, that we'll use for the first example.
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+A is an Ownable contract, which means external callers can call an `owner()` method to determine which address has control over the contract.
 
-interface IGasbackRegistration {
-    function registerContract(
-        address contractAddress,
-        string memory name,
-        string memory description,
-        uint8 category
-    ) external returns (bool);
+```solidity filename="ExampleA.sol"
+pragma solidity 0.8.20;
+
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {IGasback} from "./interfaces/IGasback.sol";
+
+contract ExampleA is Ownable {
+    IGasback public gasback;
+
+    constructor(address _gasback) Ownable(msg.sender) {
+        gasback = IGasback(_gasback);
+    }
+
+    function registerForGasback() public onlyOwner {
+        gasback.register(owner(), address(this));
+    }
 }
 ```
 
-2. **Create a function in your contract to handle registration**:
+As you can see, registration happens in one line, on line 14: `gasback.register(owner(), address(this));`. This says, register this address for gasback, and send the NFT to the owner of this contract.
 
-```solidity
-// Address of the Gasback registration contract on Shape
-address constant GASBACK_REGISTRATION_CONTRACT = 0x1234...;  // Replace with the actual address
+Inside the Gasback.sol contract (not shown), the `owner()` function of the contract that is registering gets called, so that the Gasback contract knows that the person due to receive the Gasback NFT is the person who controls the registering contract.
 
-function registerForGasback(
-    string memory name,
-    string memory description,
-    uint8 category
-) external onlyOwner {
-    IGasbackRegistration registrationContract = IGasbackRegistration(GASBACK_REGISTRATION_CONTRACT);
+<ProgrammaticallyRegisterGasbackExampleACallout />
 
-    bool success = registrationContract.registerContract(
-        address(this),
-        name,
-        description,
-        category
-    );
+To deploy the contract above run:
 
-    require(success, "Registration failed");
+```bash
+npx hardhat deployA --network shapeSepolia
+```
+
+You'll then see the deployed address in the console.
+
+To run the registration function, run:
+
+```bash
+npx hardhat registerA <deployed-address> --network shapeSepolia
+```
+
+Where the deployed address is the address printed in the deployment command.
+
+Once that's done, you can actually visit the [gasback dashboard](#) and see your new Gasback NFT!
+
+## Example B: Registering inside a contract without requiring an owner
+
+```solidity filename="ExampleB.sol"
+pragma solidity 0.8.20;
+
+import {IGasback} from "./interfaces/IGasback.sol";
+import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+
+contract ExampleB is IERC721Receiver {
+    IGasback public gasback;
+
+    constructor(address _gasback) {
+        gasback = IGasback(_gasback);
+    }
+
+    function registerForGasback() public {
+        address me = address(this);
+        gasback.register(me, me);
+    }
+
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) external override returns (bytes4) {
+        return IERC721Receiver.onERC721Received.selector;
+    }
 }
 ```
 
-3. **Call the registration function** after deploying your contract
+Contract B differs from A in a couple of key ways. Firstly, you'll notice that ExampleB is not an Ownable contract. The reason it's still able to register despite this, is that the contract itself is going to be the recipient of the Gasback NFT. This means we don't have to check an owner, because it's clearly registering itself.
 
-## Category Codes
+The second key change is the addition of the `onERC721Received` function. This inclusion is needed because Gasback.sol uses `_safeMint` to mint the NFT, which requires that any contract that receives the NFT implements this function, so that we know the NFT won't be stuck forever inside the contract, and the contract is actually expecting to receive and handle NFTs.
 
-When registering, you'll need to specify a category code for your contract:
+<ProgrammaticallyRegisterGasbackExampleBCallout />
 
-- 0: DeFi
-- 1: Gaming
-- 2: Marketplace
-- 3: Social
-- 4: NFT
-- 5: Infrastructure
-- 6: Other
+Similar to example A you can deploy and run the registration function yourself by doing:
 
-## Example Usage
+```bash
+npx hardhat deployB --network shapeSepolia
+```
 
-Here's an example of how you might implement this in a complete contract:
+and
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+```bash
+npx hardhat registerB <deployed-address> --network shapeSepolia
+```
 
-interface IGasbackRegistration {
-    function registerContract(
-        address contractAddress,
-        string memory name,
-        string memory description,
-        uint8 category
-    ) external returns (bool);
-}
+However in this example you won't see the NFT in your dashboard yet because you aren't the owner of it, the contract is! We'll explain how you can still manage the NFT that one of your contracts holds in a later tutorial, when we discuss the concept of **Delegation**.
 
-contract MyContract {
-    address public owner;
-    address constant GASBACK_REGISTRATION_CONTRACT = 0x1234...;  // Replace with actual address
+## Example C: Registering outside of a contract
 
-    constructor() {
-        owner = msg.sender;
-    }
+```solidity filename="ExampleC.sol"
+pragma solidity 0.8.20;
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
-        _;
-    }
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-    function registerForGasback(
-        string memory name,
-        string memory description,
-        uint8 category
-    ) external onlyOwner {
-        IGasbackRegistration registrationContract = IGasbackRegistration(GASBACK_REGISTRATION_CONTRACT);
-
-        bool success = registrationContract.registerContract(
-            address(this),
-            name,
-            description,
-            category
-        );
-
-        require(success, "Registration failed");
-    }
-
-    // Your contract's functionality here
+contract ExampleC is Ownable {
+    constructor() Ownable(msg.sender) {}
 }
 ```
 
-After registration, your contract will need to be approved by the Shape team before it becomes eligible for Gasback rewards.
+The final example is a tiny contract. It has no logic in it other than to make itself Ownable. But, we can still register it for Gasback!
+
+The registration logic happens outside of the contract. All you have to do is call the registration on the Gasback contract directly, entering your own address as the NFT recipient and the contract address.
+
+You can see how this is done in `scripts/register.ts` in the registerC task:
+
+```typescript
+task('registerC', 'Registers the ExampleC contract for gasback')
+  .addPositionalParam('contractAddress', 'The address of the ExampleC contract to register')
+  .setAction(async (taskArgs, hre) => {
+    const { contractAddress } = taskArgs;
+
+    const [address] = await hre.ethers.getSigners();
+
+    const gasback = await hre.ethers.getContractAt('Gasback', gasbackAddress);
+
+    const tx = await gasback.register(address, contractAddress);
+    await tx.wait(1);
+
+    console.log('ExampleC registered! Tx hash: ', tx.hash);
+  });
+```
+
+Of course, as proof it works, you can deploy and register using similar commands as before:
+
+```bash
+npx hardhat deployC --network shapeSepolia
+```
+
+and
+
+```bash
+npx hardhat registerC <deployed-address> --network shapeSepolia
+```
+
+If you want an easy way to do this method, you can simply use the Gasback dashboard UI, connect your wallet, and paste in the contract address. The UI will make the contract call for you.
+
+## Summary
+
+That's it! You have now learned 3 different ways to register your contract for Gasback. In the next tutorials, we'll discuss how to delegate gasback rights when your contract owns the NFT instead of you, and we'll learn how to withdraw claimed gasback.
