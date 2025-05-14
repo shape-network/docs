@@ -144,20 +144,6 @@ The rendering is handled by a hot swappable renderer contract. All token metadat
 
 When creating items, users can provide a "default image uri" for the fungible token and for all tiers of non fungible tokens. This image is not what will appear in wallets and marketplaces, but front ends for the items system (e.g. Assembly), can use these images instead of the onchain svg.
 
-
-## Deploying the contracts
-
-The otoms repo has various scripts to work with the items contracts, including deployment [https://github.com/shape-network/atoms/tree/main/scripts/deploy/items](https://github.com/shape-network/atoms/tree/main/scripts/deploy/items)
-
-To deploy:
-
-1. Run https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/deployItemsContracts.ts to deploy the items contracts
-2. Upgrade Otoms to V2 [https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/upgradeOtoms.ts](https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/upgradeOtoms.ts)
-3. Then run https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/setAddressesOnOtoms.ts to set the items contract addresses on the otoms contract, so that otoms can read the traits for the items
-4. Create the pickaxe using https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/createPickaxe.ts. There is one variable blueprint pickaxe defined and one standard non fungible one, pick whichever we decide to use. The blueprints now are just for testing, should find sensible otoms to use in the blueprints for mainnet
-   1. Also for mainnet we will want to change how the tiers are calculated https://github.com/shape-network/atoms/blob/main/src/items/mutators/PickaxeMutator.sol#L52-L66
-5. Call setAllowedItems on the otoms contract with the item id(s) that were created in the previous step [https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/setAllowedItems.ts](https://github.com/shape-network/atoms/blob/main/scripts/deploy/items/setAllowedItems.ts)
-
 # Creating items
 
 ### Step-by-step guides for creating different items for Assembly
