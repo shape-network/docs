@@ -285,7 +285,7 @@ Now you can create non-fungible items for Assembly.
 
 1. Create your mutator contract and implement the `IOtomItemMutator` hooks for custom item logic (`calculateTier`, `onCraft`, `onItemUse`, `onTransfer`)
    1. **Here is the [interface](https://github.com/shape-network/assembly-contracts/blob/main/contracts/interfaces/IOtomItemMutator.sol) you will need, and here is an example of a [generic mutator](https://github.com/shape-network/assembly-contracts/blob/main/contracts/items/mutators/GenericMutator.sol)**
-2. Once you've deployed your mutator contract, [follow step #1 of the previous tutorial](<Assembly%20(Otom%20Items)%201e0bac73bb3a80c4a19bc2612f88b105.md>)
+2. Once you've deployed your mutator contract, follow step #1 of the previous tutorial
    1. **Note: If you handle tiers inside your mutator contract, try adding `tieredImageUris`**
 3. Now we will call the `createNonFungibleItem` function on the `OtomItemsCore` contract, this time we pass in our mutator address
 
