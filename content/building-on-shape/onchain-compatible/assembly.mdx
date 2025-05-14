@@ -105,6 +105,8 @@ If all instances of a non fungible item are equal, the developer can set the tie
 
 Items can be:
 
+- **Crafted**: Trigger custom logic in mutator contracts through `onCraft`
+  - This hook allows custom checks to be made when crafting an item e.g. a limited edition craft only available for a set time period.
 - **Used**: Trigger custom logic in mutator contracts through `useItem`
   - ONLY non fungible items can be used in this way
   - The intent is that "using" an item then causes the traits to be altered in some way. Differing traits for the same item is only possible if the item is non fungible
