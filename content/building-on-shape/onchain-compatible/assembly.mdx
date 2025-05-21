@@ -148,7 +148,7 @@ When creating items, users can provide a "default image uri" for the fungible to
 
 ### Step-by-step guides for creating different items for Assembly
 
-We'll be using Hardhat in the examples below. Here's the [Otoms repo](https://github.com/shape-network/assembly-contracts/tree/main/contracts/items) if you'd prefer to take a look beforehand.
+We'll be using Hardhat in the examples below. Here's the [Otoms repo](https://github.com/shape-network/assembly/tree/main/packages/contracts/contracts/items) if you'd prefer to take a look beforehand.
 
 ## Creating fungible items
 
@@ -284,7 +284,7 @@ Now you can create non-fungible items for Assembly.
 ## Creating non-fungible items (w/ a mutator)
 
 1. Create your mutator contract and implement the `IOtomItemMutator` hooks for custom item logic (`calculateTier`, `onCraft`, `onItemUse`, `onTransfer`)
-   1. **Here is the [interface](https://github.com/shape-network/assembly-contracts/blob/main/contracts/interfaces/IOtomItemMutator.sol) you will need, and here is an example of a [generic mutator](https://github.com/shape-network/assembly-contracts/blob/main/contracts/items/mutators/GenericMutator.sol)**
+   1. **Here is the [interface](https://github.com/shape-network/assembly/blob/main/packages/contracts/contracts/interfaces/IOtomItemMutator.sol) you will need, and here is an example of a [generic mutator](https://github.com/shape-network/assembly/blob/main/packages/contracts/contracts/items/mutators/GenericMutator.sol)**
 2. Once you've deployed your mutator contract, follow step #1 of the previous tutorial
    1. **Note: If you handle tiers inside your mutator contract, try adding `tieredImageUris`**
 3. Now we will call the `createNonFungibleItem` function on the `OtomItemsCore` contract, this time we pass in our mutator address
