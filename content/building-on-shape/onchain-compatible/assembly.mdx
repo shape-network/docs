@@ -239,7 +239,7 @@ const testPick = {
         },
     ],
     // traits: these are optional,
-		// but become useful when piared with a mutator contract (more on that later).
+		// but become useful when paired with a mutator contract (more on that later).
     traits: [
         {
             typeName: "Mining Power",
@@ -285,7 +285,7 @@ await core.createNonFungibleItem(
 
 Now you can create non-fungible items for Assembly.
 
-## Creating non-fungible items (w/ a mutator)
+## Creating non-fungible items (with a mutator)
 
 1. Create your mutator contract and implement the `IOtomItemMutator` hooks for custom item logic (`calculateTier`, `onCraft`, `onItemUse`, `onTransfer`)
    1. **Here is the [interface](https://github.com/shape-network/assembly/blob/main/packages/contracts/contracts/interfaces/IOtomItemMutator.sol) you will need, and here is an example of a [generic mutator](https://github.com/shape-network/assembly/blob/main/packages/contracts/contracts/items/mutators/GenericMutator.sol)**
