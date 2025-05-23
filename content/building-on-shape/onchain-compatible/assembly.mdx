@@ -161,10 +161,10 @@ We'll be using Hardhat in the examples below. Here's the [Otoms repo](https://gi
 ```jsx
 const item = {
   // name, description, & imageUri: used to generate the NFT metadata.
-  name: 'Jusonic Materia',
-  description: 'A fungible thing made of Ju2',
+  name: 'Jusonic Ore',
+  description: 'A ductile metal, known for its strength and lightweight',
   imageUri:
-    'https://oldschool.runescape.wiki/images/thumb/Runite_ore_detail.png/260px-Runite_ore_detail.png?7b4fd',
+    'https://arweave.net/cBCEZ6bqtmdkS6Vj8dIAgXhl4O8oDSyAWuqCMlCDToU',
   // blueprint: list of Otoms used to craft your Item
   // (in our example we chose the Otom Ju2 with the an amount of 2).
   blueprint: [
@@ -172,15 +172,27 @@ const item = {
       componentType: 0, // ComponentType.OTOM
       itemIdOrOtomTokenId:
         '35159569680903626501449329353512578019171730918789714169601127546706358467814', // Ju2
-      amount: 2,
+      amount: 3,
       criteria: [],
     },
   ],
   // traits: these are optional
   traits: [
     {
-      typeName: 'Base Otom',
-      valueString: 'Ju2',
+      typeName: 'Strength',
+      valueString: '70',
+      valueNumber: 70,
+      traitType: 0, // TraitType.NUMBER
+    },
+    {
+      typeName: 'Weight',
+      valueString: '10',
+      valueNumber: 10,
+      traitType: 0, // TraitType.NUMBER
+    },
+    {
+      typeName: 'Build Materials',
+      valueString: 'Three Ju2',
       valueNumber: 0,
       traitType: 1, // TraitType.STRING
     },
@@ -197,7 +209,7 @@ const item = {
 ```jsx
 const core = await ethers.getContractAt(
   'OtomItemsCore',
-  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30'
+  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30' // Shape Mainnet
 );
 
 await core.createFungibleItem(
@@ -221,38 +233,43 @@ And that's all you need to create your first fungible Assembly item.
 ```jsx
 const testPick = {
 		// name, description, & imageUri: used to generate the NFT metadata.
-    name: "Test Pickaxe",
-    description: "A pickaxe for mining",
+    name: "Invisibility Cloak",
+    description: "A mythical cloak that grants invisibility",
         imageUri:
-        "https://oldschool.runescape.wiki/images/thumb/Gilded_pickaxe_detail.png/260px-Gilded_pickaxe_detail.png?bfb2e",
+        "https://arweave.net/D3uuvnLDY48wmJ_Qic5l3AUrQ1pfOaUYn79t9PJYG18",
     // tieredImageUris: used for tiered items; optionally leave empty.
     tieredImageUris: ["", "", "", "", "", "", ""],
     // blueprint: list of Otoms used to craft your Item
 		// (in our example we chose the Otom Ju3 with the an amount of 1).
     blueprint: [
-    {
-            componentType: 0, // ComponentType.OTOM
-            itemIdOrOtomTokenId:
-                "30743134292964981883308030024777035899442251708304773008789347656986494153707", // Ju3
-            amount: 1,
-            criteria: [],
+        {
+          componentType: 0, // ComponentType.OTOM
+          itemIdOrOtomTokenId: "59556967404187678662646267921069430003902119556859655597906602022599940926148", // T15
+          amount: 1,
+          criteria: []
         },
+        {
+          componentType: 0, // ComponentType.OTOM
+          itemIdOrOtomTokenId: "103207475906385737307003328874764609497044818069100475897999853498353983732479", // Sr2
+          amount: 2,
+          criteria: []
+        }
     ],
     // traits: these are optional,
 		// but become useful when paired with a mutator contract (more on that later).
     traits: [
         {
-            typeName: "Mining Power",
-            valueString: 10
-            valueNumber: "10",
-            traitType: 0, // TraitType.NUMBER
+            typeName: "Ability",
+            valueString: "Invisibility",
+            valueNumber: 0,
+            traitType: 1 // TraitType.STRING
         },
         {
-            typeName: "Usages Remaining",
-            valueString: 10,
-            valueNumber: "10",
-            traitType: 0, // TraitType.NUMBER
-        },
+            typeName: "Build Materials",
+            valueString: "T15 and two Sr2",
+            valueNumber: 0,
+            traitType: 1 // TraitType.STRING
+        }
     ],
     // costInWei: what you want to charge for the item
     costInWei: 0,
@@ -266,7 +283,7 @@ const testPick = {
 ```jsx
 const core = await ethers.getContractAt(
   'OtomItemsCore',
-  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30'
+  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30' // Shape Mainnet
 );
 
 await core.createNonFungibleItem(
@@ -296,7 +313,7 @@ Now you can create non-fungible items for Assembly.
 ```jsx
 const core = await ethers.getContractAt(
   'OtomItemsCore',
-  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30'
+  '0xe8af571878D33CfecA4eA11caEf124E5ef105a30' // Shape Mainnet
 );
 
 const mutatorAddress = '0xYourContractAddressHere';
