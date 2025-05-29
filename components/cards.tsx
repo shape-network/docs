@@ -7,6 +7,11 @@ export const ProjectCards: FC = () => {
   return (
     <Cards>
       <Card
+        title="Assembly"
+        subtitle="A flexible ERC1155 system for creating and crafting composable items"
+        href="/building-on-shape/onchain-compatible/assembly"
+      />
+      <Card
         title="OTOM by Kjetil Golid"
         subtitle="Create and experiment with particles called otoms"
         href="/building-on-shape/onchain-compatible/otom"
