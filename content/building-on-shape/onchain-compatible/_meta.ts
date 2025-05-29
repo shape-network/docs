@@ -1,8 +1,8 @@
 import type { MetaRecord } from 'nextra';
 
 const meta: MetaRecord = {
-  otom: 'OTOM',
   assembly: 'Assembly',
+  otom: 'OTOM',
 };
 
 export default meta;
