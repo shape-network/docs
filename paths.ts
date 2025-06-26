@@ -7,7 +7,7 @@ export const paths = {
   repoBase: 'https://github.com/shape-network/docs/tree/main/',
   twitter: 'https://x.com/Shape_L2',
   discord: 'https://discord.com/invite/shape-l2',
-  gasback: 'https://docs.shape.network/building-on-shape/gasback',
+  gasback: 'https://docs.shape.network/gasback',
   stack: 'https://stack.shape.network',
   alchemyNode: 'https://www.alchemy.com/supernode',
   alchemyDashboard: 'https://www.alchemy.com/dashboard',

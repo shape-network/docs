@@ -2,14 +2,6 @@ import { Link } from '@components/ui/link';
 import { paths } from '@paths';
 import { Callout } from 'nextra/components';
 
-export const StackCallout = () => {
-  return (
-    <Callout type="info">
-      <Link href={paths.stack}>Mint your Stack</Link>.
-    </Callout>
-  );
-};
-
 export const AddToStackCallout = () => {
   return (
     <Callout type="info">
