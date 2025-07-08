@@ -9,5 +9,10 @@ export default withNextra({
       destination: '/gasback',
       permanent: true,
     },
+    {
+      source: '/documentation/introduction',
+      destination: '/',
+      permanent: true,
+    },
   ],
 });
