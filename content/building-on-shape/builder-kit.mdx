@@ -1,0 +1,69 @@
+# Shape Builder Kit for Developers
+
+The Shape Builder Kit is your go-to Next.js starter for crafting dApps on Shape ecosystem. batteries-included with wallet connect, NFT fetching, and more, all pre-wired.
+
+## Why Use the Builder Kit?
+
+Starting from scratch can be a pain, the Builder Kit is here to save you from having to search for the right libraries and tools, all with sensible defaults:
+
+- **Batteries Included**: Comes with wallet connection (wagmi), Shape RPC integration, and NFT fetching out of the box. No reinventing the wheel.
+- **AI-Ready**: Pairs seamlessly with the Shape MCP server and Vercel AI SDK for agentic apps.
+- **Fast Track to Deploy**: Built for Vercel, so you can deploy to prod in minutes and focus on getting your first users!
+
+It&apos;s completely open and composable: use it to kickstart, then tweak to your style & needs. Check it out: [github.com/shape-network/builder-kit](https://github.com/shape-network/builder-kit).
+
+## How to Install and Get Started
+
+### Prerequisites
+
+- Node.js 18+ (check with `node -v`)
+- Yarn or npm
+- A web3 wallet (e.g., MetaMask) with Shape network added (Chain ID `360` for Shape Mainnet, `11011` for Shape Testnet)
+- Optional: Alchemy API key for NFT data
+
+### Installation
+
+1. **Clone the Repo**:
+
+   ```bash
+   git clone https://github.com/shape-network/builder-kit.git my-shape-dapp
+   cd my-shape-dapp
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   yarn install
+   ```
+
+   This pulls in Next.js, wagmi, viem, and other goodies.
+
+3. **Configure Environment**:
+
+   - Create a `.env.local` file:
+     ```env
+     NEXT_PUBLIC_ALCHEMY_API_KEY=your-alchemy-key  # For NFT metadata
+     NEXT_PUBLIC_SHAPE_RPC_URL=https://rpc.shape.network  # Or your node
+     CHAIN_ID=360  # Mainnet; use 11011 for Sepolia
+     ```
+
+4. **Run Locally**:
+
+   ```bash
+   yarn dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser. You&apos;ll see the starter app with a connect button.
+
+5. **Deploy to Vercel** (Optional):
+   - Push to GitHub, import to [Vercel](https://vercel.com/new), set env vars in the UI, and deploy. Instant live app!
+
+### What&apos;s Included?
+
+- **Wallet Connection**: Uses wagmi for MetaMask (or other wallet providers) integration. Connect with one click—code in `/components/WalletConnect.tsx`.
+- **Fetching Shape NFTs**: Pulls NFTs for the connected address using viem&apos;s `getNftsForOwner` (via Alchemy or RPC). Check `/utils/nft.ts` for the fetch logic.
+- **Shape RPC Setup**: Pre-configured with Shape&apos;s public RPC (`https://rpc.shape.network`). Swap it with your own node in `.env`.
+- **UI Components**: All the components you can dream of, based on [Shadcn/ui](https://ui.shadcn.com/) & Tailwind CSS, customize in `/ui` (pro tip: use CSS variables in `global.css` to make your own theme).
+- **Extensibility**: Hooks for adding MCP tool calls or Vercel AI agents. See `/api` for API route examples.
+
+Questions? Hit up [@williamhzo](https://x.com/williamhzo) or Shape Discord. Let&apos;s build something epic on Shape! 🚀
