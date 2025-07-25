@@ -35,7 +35,7 @@ yarn start
 
 Contributions to improve the documentation are welcome. Please feel free to submit pull requests with corrections or enhancements.
 
-If you have feedback, please open an issue or reach out on [Discord](https://discord.com/invite/shape-l2).
+If you have feedback, please open an issue or reach out to [@williamhzo](https://x.com/williamhzo) or on our [Discord](https://discord.com/invite/shape-l2).
 
 ## License
 
