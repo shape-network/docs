@@ -31,15 +31,9 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
 
 [Vercel AI SDK](https://ai-sdk.dev/docs/introduction) makes agent development a breeze. It's TypeScript-first, works with models like ChatGPT, Grok, or Claude, and handles streaming, tool calls, and chaining. Pair it with our MCP server for Shape-specific capabilities.
 
-### Why Vercel AI?
+### First Steps
 
-- Streams responses for real-time chats.
-- Built-in tool support: Call MCP tools like `getShapeNft` mid-conversation.
-- Deploys to Vercel in one click, with Next.js for UIs.
-
-### Rough First Steps
-
-1. **Setup a Next.js App**: `npx create-next-app my-shape-agent`
+1. **Setup a Next.js App**: `npx create-next-app my-shape-agent`. (Pro tip: If you want a head start, check out our [Builder Kit](https://github.com/shape-network/builder-kit)—it's a Next.js starter for Shape projects with wallet connect, RPC setup, and UI components. Great optional jumping-off point, but not required.)
 2. **Install SDK**: `npm i ai @vercel/ai-sdk viem wagmi` (for on-chain integration) — [more info](https://ai-sdk.dev/docs/introduction).
 3. **Connect MCP**: In an API route (e.g., /api/agent.ts):
 
@@ -98,7 +92,7 @@ For full docs, see [Vercel AI SDK](https://vercel.com/docs/ai-sdk).
 
 ## AI Agent Ideas for NFTs on Shape
 
-Shape&apos;s low fees and Gasback make it ideal for NFT agents. Here are fun starters—build these for the upcoming hackathon!
+Shape's low fees and Gasback make it ideal for NFT agents. Here are fun starters—build these for the upcoming hackathon!
 
 - **NFT Curator Bot**: Queries `getCollectionAnalytics` to spot trending collections, then uses `getShapeNft` to suggest buys. Agent prompt: "Curate 5 underrated NFTs under 0.1 ETH—why buy?"
 - **Gasback Optimizer**: Simulates rewards with `simulateGasbackRewards` for creators. Chains with `getTopShapeCreators` for comparisons. Prompt: "Optimize my contract for max Gasback—tx volume tips?"
