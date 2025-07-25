@@ -6,6 +6,7 @@ const meta: MetaRecord = {
   'differences-ethereum-shape': 'Differences between Ethereum and Shape',
   'alchemy-api': 'Alchemy API',
   'superchain-incentives': 'Superchain Incentives',
+  ai: 'AI',
 };
 
 export default meta;
