@@ -53,10 +53,10 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
        },
      });
 
-     // Get all available tools automatically
+     // Get all available tools exposed
      const tools = await mcpClient.tools();
 
-     // Stream response with auto-discovered tools
+     // Stream response
      const result = streamText({
        model: openai('gpt-4o'),
        tools,
