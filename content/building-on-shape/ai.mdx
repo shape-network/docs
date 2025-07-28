@@ -34,36 +34,36 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
 ### First Steps
 
 1. **Setup a Next.js App**: `npx create-next-app my-shape-agent`. (Pro tip: If you want a head start, check out our [Builder Kit](https://github.com/shape-network/builder-kit)—it's a Next.js starter for Shape projects with wallet connect, RPC setup, and UI components. Great optional jumping-off point, but not required.)
-2. **Install SDK**: `npm i ai @vercel/ai-sdk viem wagmi` (for on-chain integration) — [more info](https://ai-sdk.dev/docs/introduction).
+2. **Install SDK**: `npm i ai @vercel/ai-sdk viem wagmi` (for onchain integration) — [more info](https://ai-sdk.dev/docs/introduction).
 3. **Connect MCP**: In an API route (e.g., /api/agent.ts):
 
    ```ts
-   import { createChatAgent } from 'ai';
-   import { rpcClient } from './clients'; // Your viem client
+   import { generateText, experimental_createMCPClient } from 'ai';
+   import { openai } from '@ai-sdk/openai';
 
-   export async function POST(req) {
+   export async function POST(req: Request) {
      const { messages } = await req.json();
-     const agent = createChatAgent({
-       model: 'grok', // Or openai, claude
-       tools: [
-         {
-           name: 'getChainStatus',
-           description: 'Check Shape network status',
-           execute: async () => {
-             const response = await fetch('http://your-mcp-url/mcp', {
-               method: 'POST',
-               headers: { 'Content-Type': 'application/json' },
-               body: JSON.stringify({ toolName: 'getChainStatus' }),
-             });
-             const data = await response.json();
-             return data.content[0].text;
-           },
-         },
-         // Add more MCP tools
-       ],
+
+     // Connect to your Shape MCP server
+     const mcpClient = await experimental_createMCPClient({
+       name: 'shape-mcp',
+       transport: {
+         type: 'http',
+         url: 'https://your-deployed-shape-mcp.vercel.app/mcp', // Your deployed MCP server
+       },
      });
-     const reply = await agent.chat(messages);
-     return new Response(JSON.stringify(reply));
+
+     // Get all available tools automatically
+     const tools = await mcpClient.tools();
+
+     // Generate response with auto-discovered tools
+     const result = await generateText({
+       model: openai('gpt-4o'),
+       tools, // All Shape tools are automatically available
+       messages,
+       maxSteps: 10, // Allow multi-step tool usage
+     });
+     return Response.json({ text: result.text });
    }
    ```
 
@@ -86,6 +86,8 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
    }
    ```
 
+```
+
 5. **Deploy**: Push to GitHub, import to Vercel, set env vars, and go live.
 
 For full docs, see [Vercel AI SDK](https://vercel.com/docs/ai-sdk).
@@ -102,3 +104,4 @@ Shape's low fees and Gasback make it ideal for NFT agents. Here are fun starters
 These leverage MCP for on-chain data, Vercel AI for reasoning—start simple, add wallet integration (wagmi) for actions.
 
 Questions? Hit up [@williamhzo](https://x.com/williamhzo) or Shape Discord. Let's build!!
+```
