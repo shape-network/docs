@@ -49,7 +49,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
        name: 'shape-mcp',
        transport: {
          type: 'http',
-         url: 'https://your-deployed-shape-mcp.vercel.app/mcp', // Your deployed MCP server
+         url: 'https://your-deployed-shape-mcp.com/mcp', // Use http://localhost:3002/mcp for local dev
        },
      });
 
@@ -59,7 +59,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
      // Stream response with auto-discovered tools
      const result = streamText({
        model: openai('gpt-4o'),
-       tools, // All Shape tools are automatically available
+       tools,
        messages,
        maxSteps: 10, // Allow multi-step tool usage
      });
@@ -78,6 +78,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
       api: '/api/agent',
       maxSteps: 10, // Enable multi-step tool usage
      });
+
      return (
        <div>
       <div>
