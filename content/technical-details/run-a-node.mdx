@@ -12,24 +12,41 @@ The process is the same as running a standard op-node, but using a different `ro
 
 [genesis.json](https://arweave.net/LrSrsEJsUtSWNAzkpKqkwE9RG3JZP1SmlOQNlTu8Nxk)
 
+Use the following override flags when running op-node:
+
+```
+--override.granite=1727370000
+--override.holocene=1740139200
+```
+
 ## Shape Sepolia
 
 [rollup.json](https://arweave.net/gSb3hOzLaBIBy-AyWA2O2_03sfXJ-IwPqmV6Mhstmj8)
 
 [genesis.json](https://arweave.net/nw6opum2ALT9T39TSAAK_Wq0Z75aZJWd6J2RmiWHm_s)
 
+Use the following override flags when running op-node:
+
+```
+--override.ecotone=0
+--override.fjord=1721732400
+--override.granite=1727197200
+--override.holocene=1739880000
+--override.pectrablobschedule=1742925600
+```
+
 ## Troubleshooting
 
 If your node is stalling, failing to find peers, or otherwise unresponsive, try passing the bootnode enodes in directly with `--p2p.bootnodes` in op-node:
 
-### Shape-Sepolia - op-node bootnodes
-
-```json
-enode://34fc07c447b843f3915f72cae27daeda7f2f8c3ea4b9132aed188387d3208d1d5cd7eeea58d30d038c14f985a5b108ad6b2172815ed8b757c9de9f609741b2a6@34.228.9.78:0?discport=30301,enode://61841b7682f808f5ce8222f15d7de7f118a2c2c3e342fe42ea41e987ae22fb90e49ef2b5f394897e791c33c6fc59d7ad064851ee653badb2d6ece7a94040944b@54.91.75.177:0?discport=30301
-```
-
 ### Shape-Mainnet - op-node bootnodes
 
 ```json
-enode://ae31be7c6596f4bc3657f90b65a1569c7b0db10c976649f06fe5cfb26139064d78d22b41aede293aa7358fc336d086051ac7fce78f063dce89e1da19c7b88aee@34.228.226.23:0?discport=30301,enode://0bea78f02c9bee58326b3a612dae63dc5a0193fb3dfc9be687c9757d25606405ef9f87810157598fce35688bdb5b3834dc6283afab6dc5774abbd6c5a7b17cea@3.85.27.162:0?discport=30301
+p2p.bootnodes=enode://ae31be7c6596f4bc3657f90b65a1569c7b0db10c976649f06fe5cfb26139064d78d22b41aede293aa7358fc336d086051ac7fce78f063dce89e1da19c7b88aee@34.228.226.23:0?discport=30301,enode://0bea78f02c9bee58326b3a612dae63dc5a0193fb3dfc9be687c9757d25606405ef9f87810157598fce35688bdb5b3834dc6283afab6dc5774abbd6c5a7b17cea@3.85.27.162:0?discport=30301
+```
+
+### Shape-Sepolia - op-node bootnodes
+
+```json
+p2p.bootnodes=enode://34fc07c447b843f3915f72cae27daeda7f2f8c3ea4b9132aed188387d3208d1d5cd7eeea58d30d038c14f985a5b108ad6b2172815ed8b757c9de9f609741b2a6@34.228.9.78:0?discport=30301,enode://61841b7682f808f5ce8222f15d7de7f118a2c2c3e342fe42ea41e987ae22fb90e49ef2b5f394897e791c33c6fc59d7ad064851ee653badb2d6ece7a94040944b@54.91.75.177:0?discport=30301
 ```
