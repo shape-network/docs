@@ -38,7 +38,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
 3. **Connect MCP**: In an API route (e.g., /api/agent.ts):
 
    ```ts
-   import { generateText, experimental_createMCPClient } from 'ai';
+   import { streamText, experimental_createMCPClient } from 'ai';
    import { openai } from '@ai-sdk/openai';
 
    export async function POST(req: Request) {
@@ -56,14 +56,15 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
      // Get all available tools automatically
      const tools = await mcpClient.tools();
 
-     // Generate response with auto-discovered tools
-     const result = await generateText({
+     // Stream response with auto-discovered tools
+     const result = streamText({
        model: openai('gpt-4o'),
        tools, // All Shape tools are automatically available
        messages,
        maxSteps: 10, // Allow multi-step tool usage
      });
-     return Response.json({ text: result.text });
+
+     return result.toDataStreamResponse();
    }
    ```
 
@@ -73,10 +74,20 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
    import { useChat } from 'ai/react';
 
    export default function AgentChat() {
-     const { messages, input, handleInputChange, handleSubmit } = useChat({ api: '/api/agent' });
+     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+      api: '/api/agent',
+      maxSteps: 10, // Enable multi-step tool usage
+     });
      return (
        <div>
-         {messages.map((m) => <div key={m.id}>{m.content}</div>)}
+      <div>
+        {messages.map(m => (
+          <div key={m.id}>
+            <strong>{m.role}:</strong> {m.content}
+          </div>
+        ))}
+        {isLoading && <div>Thinking...</div>}
+      </div>
          <form onSubmit={handleSubmit}>
            <input value={input} onChange={handleInputChange} />
            <button type="submit">Send</button>
