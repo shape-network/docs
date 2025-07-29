@@ -61,7 +61,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
        tools,
        messages,
        maxSteps: 10, // Allow up to 10 sequential tool calls
-       system: 'You are a helpful assistant that [...]' // add your custom system prompt
+       system: 'You are a helpful assistant that [...]', // add your custom system prompt
        onFinish: async () => {
          await mcpClient.close();
        },
