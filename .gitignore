@@ -2,3 +2,4 @@ node_modules
 .next
 .env
 _pagefind/
+.claude/settings.local.json
