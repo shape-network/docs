@@ -48,7 +48,7 @@ For full tools and examples, see the [README](https://github.com/shape-network/m
      const mcpClient = await experimental_createMCPClient({
        name: 'shape-mcp',
        transport: {
-         type: 'http',
+         type: 'sse',
          url: 'https://your-deployed-shape-mcp.com/mcp', // Use http://localhost:3002/mcp for local dev
        },
      });
