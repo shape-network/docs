@@ -1,0 +1,122 @@
+# AI Agents on Shape
+
+This guide gets you started with the Model Context Protocol (MCP) and our Shape MCP server, tools to make your AI agents smarter onchain. We'll cover the basics, show how to plug in Vercel AI, and spark some NFT agent ideas.
+
+## What is MCP?
+
+MCP (Model Context Protocol) is a standard for letting AI models like ChatGPT, Grok, or Claude safely access and interact with external data. Think blockchains, APIs, or tools. It's like giving your agent a direct communication channel to Shape, with features for tool calls, resources, and permissions. MCP keeps things structured and extensible, while keeping granular control over access or authorization for example.
+
+For a deep dive, check the [official MCP intro](https://modelcontextprotocol.io/introduction). In short: MCP turns your AI into an Shape-connoisseur, chaining queries like "fetch Shape NFTs" to "analyze collections trends" without leaving the chat.
+
+## Shape MCP Server: Your On-Chain Data Bridge
+
+We've built a dedicated MCP server for Shape, wrapping key data like Gasback distributions, NFT analytics, and Stack medals. It's open-source, forkable, and ready for your agents. Built with [xmcp](https://xmcp.dev/), it's TypeScript-first so no need to learn Python, and it deploys in minutes.
+
+- **Repository**: [github.com/shape-network/mcp-server](https://github.com/shape-network/mcp-server)
+- **Why Use It?** Agents can query Shape without raw RPC calls. E.g., simulate Gasback rewards or track Stack achievements. It's modular, so you can extend it for any project.
+
+### Quick Setup
+
+Fork the repo and deploy your own instance, keeping things non-hosted and under your control.
+
+1. Fork and clone: `git clone https://github.com/shape-network/mcp-server`
+2. Install: `yarn install`
+3. Env vars in `.env`: `ALCHEMY_API_KEY=your-key`, `CHAIN_ID=360` (mainnet), optional `REDIS_URL` for caching.
+4. Run locally: `yarn dev` (at http://localhost:3002/mcp)
+5. Deploy to Vercel: Import the fork, set env vars in the UI, and hit deploy.
+
+For full tools and examples, see the [README](https://github.com/shape-network/mcp-server/blob/main/README.md).
+
+## Building AI Agents with Vercel AI SDK
+
+[Vercel AI SDK](https://ai-sdk.dev/docs/introduction) makes agent development a breeze. It's TypeScript-first, works with models like ChatGPT, Grok, or Claude, and handles streaming, tool calls, and chaining. Pair it with our MCP server for Shape-specific capabilities.
+
+### First Steps
+
+1. **Setup a Next.js App**: `npx create-next-app my-shape-agent`. (Pro tip: If you want a head start, check out our [Builder Kit](https://github.com/shape-network/builder-kit)—it's a Next.js starter for Shape projects with wallet connect, RPC setup, and UI components. Great optional jumping-off point, but not required.)
+2. **Install SDK**: `npm i ai @vercel/ai-sdk viem wagmi` (for onchain integration) — [more info](https://ai-sdk.dev/docs/introduction).
+3. **Connect MCP**: In an API route (e.g., /api/agent.ts):
+
+   ```ts
+   import { openai } from '@ai-sdk/openai';
+   import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+   import { experimental_createMCPClient, streamText } from 'ai';
+
+   export const maxDuration = 30;
+
+   export async function POST(req: Request) {
+     const { messages } = await req.json();
+
+     // Connect to your deployed MCP server
+     const url = new URL('https://shape-mcp-server.vercel.app/mcp'); // or http://localhost:3002/mcp for local
+     const mcpClient = await experimental_createMCPClient({
+       transport: new StreamableHTTPClientTransport(url),
+     });
+
+     // Get all available tools exposed
+     const tools = await mcpClient.tools();
+
+     const result = await streamText({
+       model: openai('gpt-4o'),
+       tools,
+       messages,
+       maxSteps: 10, // Allow up to 10 sequential tool calls
+       system: 'You are a helpful assistant that [...]', // add your custom system prompt
+       onFinish: async () => {
+         await mcpClient.close();
+       },
+     });
+
+     return result.toDataStreamResponse();
+   }
+   ```
+
+4. **Add UI**: Use `useChat` hook in a page:
+
+   ```ts
+   import { useChat } from 'ai/react';
+
+   export default function AgentChat() {
+     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+      api: '/api/agent',
+      maxSteps: 10, // Enable multi-step tool usage
+     });
+
+     return (
+       <div>
+      <div>
+        {messages.map(m => (
+          <div key={m.id}>
+            <strong>{m.role}:</strong> {m.content}
+          </div>
+        ))}
+        {isLoading && <div>Thinking...</div>}
+      </div>
+         <form onSubmit={handleSubmit}>
+           <input value={input} onChange={handleInputChange} />
+           <button type="submit">Send</button>
+         </form>
+       </div>
+     );
+   }
+   ```
+
+```
+
+5. **Deploy**: Push to GitHub, import to Vercel, set env vars, and go live.
+
+For full docs, see [Vercel AI SDK](https://vercel.com/docs/ai-sdk).
+
+## AI Agent Ideas for NFTs on Shape
+
+Shape's low fees and Gasback make it ideal for NFT agents. Here are fun starters—build these for the upcoming hackathon!
+
+- **NFT Curator Bot**: Queries `getCollectionAnalytics` to spot trending collections, then uses `getShapeNft` to suggest buys. Agent prompt: "Curate 5 underrated NFTs under 0.1 ETH—why buy?"
+- **Gasback Optimizer**: Simulates rewards with `simulateGasbackRewards` for creators. Chains with `getTopShapeCreators` for comparisons. Prompt: "Optimize my contract for max Gasback—tx volume tips?"
+- **Stack Achievement Coach**: Tracks progress via `getStackAchievements`, suggests actions (e.g., "Mint 3 more for gold medal"). Prompt: "What's my Stack level? Steps to next tier?"
+- **Collection Analyzer**: Combines `getCollectionAnalytics` and `getChainStatus` to time mints. Prompt: "Is now good to mint on collection X? Gas low?"
+
+These leverage MCP for on-chain data, Vercel AI for reasoning—start simple, add wallet integration (wagmi) for actions.
+
+Questions? Hit up [@williamhzo](https://x.com/williamhzo) or Shape Discord. Let's build!!
+```
