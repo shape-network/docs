@@ -52,7 +52,7 @@ export const RegisterGasbackCallout = () => {
   return (
     <Callout type="info">
       Learn how to{' '}
-      <Link href="/tutorials/registering-your-contract-for-gasback">
+      <Link href="/tutorials/registering-contract-gasback">
         register your contracts for Gasback here
       </Link>
       .
