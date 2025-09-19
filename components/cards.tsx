@@ -181,7 +181,7 @@ export const NodeProvidersCards: FC = () => {
       <Card
         title="Alchemy Supernode"
         subtitle="A highly reliable RPC"
-        href="https://www.alchemy.com/shape"
+        href="https://www.alchemy.com/rpc/shape"
       />
     </Cards>
   );
