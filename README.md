@@ -4,16 +4,16 @@
 
 ```bash
 # Install dependencies
-yarn
+bun install
 
 # Start development server
-yarn dev
+bun run dev
 
 # Build for production
-yarn build
+bun run build
 
 # Start production server
-yarn start
+bun run start
 ```
 
 ## Repository Structure
