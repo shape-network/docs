@@ -26,5 +26,9 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "5.8.2"
+  },
+  "packageManager": "bun@1.1.6",
+  "engines": {
+    "bun": ">=1.1.6"
   }
 }
