@@ -6,7 +6,7 @@ The Assembly system, built on top of Otoms, is a flexible ERC1155 implementation
 
 It's a community-driven and open source project, source code is available [here on GitHub](https://github.com/shape-network/assembly), where you'll find both code for the web dApp implementation and the contracts.
 
-We greatly welcome contributions to the project! Please reach out on [Discord](https://discord.com/invite/shape-L2) or [Twitter/X](https://x.com/shape_L2) if you'd like to get involved.
+We greatly welcome contributions to the project! Please reach out on [Discord](https://discord.com/invite/shape-L2) or [Twitter/X](https://x.com/shape) if you'd like to get involved.
 
 ### Key Components
 
@@ -163,8 +163,7 @@ const item = {
   // name, description, & imageUri: used to generate the NFT metadata.
   name: 'Jusonic Ore',
   description: 'A ductile metal, known for its strength and lightweight',
-  imageUri:
-    'https://arweave.net/cBCEZ6bqtmdkS6Vj8dIAgXhl4O8oDSyAWuqCMlCDToU',
+  imageUri: 'https://arweave.net/cBCEZ6bqtmdkS6Vj8dIAgXhl4O8oDSyAWuqCMlCDToU',
   // blueprint: list of Otoms used to craft your Item
   // (in our example we chose the Otom Ju2 with the an amount of 2).
   blueprint: [
@@ -232,49 +231,50 @@ And that's all you need to create your first fungible Assembly item.
 
 ```jsx
 const testPick = {
-		// name, description, & imageUri: used to generate the NFT metadata.
-    name: "Invisibility Cloak",
-    description: "A mythical cloak that grants invisibility",
-        imageUri:
-        "https://arweave.net/D3uuvnLDY48wmJ_Qic5l3AUrQ1pfOaUYn79t9PJYG18",
-    // tieredImageUris: used for tiered items; optionally leave empty.
-    tieredImageUris: ["", "", "", "", "", "", ""],
-    // blueprint: list of Otoms used to craft your Item
-		// (in our example we chose the Otom Ju3 with the an amount of 1).
-    blueprint: [
-        {
-          componentType: 0, // ComponentType.OTOM
-          itemIdOrOtomTokenId: "59556967404187678662646267921069430003902119556859655597906602022599940926148", // T15
-          amount: 1,
-          criteria: []
-        },
-        {
-          componentType: 0, // ComponentType.OTOM
-          itemIdOrOtomTokenId: "103207475906385737307003328874764609497044818069100475897999853498353983732479", // Sr2
-          amount: 2,
-          criteria: []
-        }
-    ],
-    // traits: these are optional,
-		// but become useful when paired with a mutator contract (more on that later).
-    traits: [
-        {
-            typeName: "Ability",
-            valueString: "Invisibility",
-            valueNumber: 0,
-            traitType: 1 // TraitType.STRING
-        },
-        {
-            typeName: "Build Materials",
-            valueString: "T15 and two Sr2",
-            valueNumber: 0,
-            traitType: 1 // TraitType.STRING
-        }
-    ],
-    // costInWei: what you want to charge for the item
-    costInWei: 0,
-    // feeRecipient: who should get the fee
-    feeRecipient: "0x0000000000000000000000000000000000000000",
+  // name, description, & imageUri: used to generate the NFT metadata.
+  name: 'Invisibility Cloak',
+  description: 'A mythical cloak that grants invisibility',
+  imageUri: 'https://arweave.net/D3uuvnLDY48wmJ_Qic5l3AUrQ1pfOaUYn79t9PJYG18',
+  // tieredImageUris: used for tiered items; optionally leave empty.
+  tieredImageUris: ['', '', '', '', '', '', ''],
+  // blueprint: list of Otoms used to craft your Item
+  // (in our example we chose the Otom Ju3 with the an amount of 1).
+  blueprint: [
+    {
+      componentType: 0, // ComponentType.OTOM
+      itemIdOrOtomTokenId:
+        '59556967404187678662646267921069430003902119556859655597906602022599940926148', // T15
+      amount: 1,
+      criteria: [],
+    },
+    {
+      componentType: 0, // ComponentType.OTOM
+      itemIdOrOtomTokenId:
+        '103207475906385737307003328874764609497044818069100475897999853498353983732479', // Sr2
+      amount: 2,
+      criteria: [],
+    },
+  ],
+  // traits: these are optional,
+  // but become useful when paired with a mutator contract (more on that later).
+  traits: [
+    {
+      typeName: 'Ability',
+      valueString: 'Invisibility',
+      valueNumber: 0,
+      traitType: 1, // TraitType.STRING
+    },
+    {
+      typeName: 'Build Materials',
+      valueString: 'T15 and two Sr2',
+      valueNumber: 0,
+      traitType: 1, // TraitType.STRING
+    },
+  ],
+  // costInWei: what you want to charge for the item
+  costInWei: 0,
+  // feeRecipient: who should get the fee
+  feeRecipient: '0x0000000000000000000000000000000000000000',
 };
 ```
 

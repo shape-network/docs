@@ -5,7 +5,7 @@ export const paths = {
   canonical: 'https://docs.shape.network',
   repo: 'https://github.com/shape-network/docs',
   repoBase: 'https://github.com/shape-network/docs/tree/main/',
-  twitter: 'https://x.com/Shape_L2',
+  twitter: 'https://x.com/shape',
   discord: 'https://discord.com/invite/shape-l2',
   gasback: 'https://docs.shape.network/gasback',
   stack: 'https://stack.shape.network',
