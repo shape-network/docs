@@ -28,7 +28,7 @@ bun run start
 
 - [Shape Website](https://shape.network)
 - [Documentation](https://docs.shape.network)
-- [Twitter/X](https://x.com/Shape_L2)
+- [Twitter/X](https://x.com/shape)
 - [Discord](https://discord.com/invite/shape-l2)
 
 ## Contributing
