@@ -31,6 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/oracles/gelato-vrf',
     '/tools/safes-asset-security',
     '/tools/sybil-resistance',
+    '/tutorials/mint-nft-collection',
     '/tutorials/registering-contract-gasback',
     '/tutorials/registering-contract-gasback/dashboard',
     '/tutorials/registering-contract-gasback/programmatically',
