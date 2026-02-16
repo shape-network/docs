@@ -1,4 +1,5 @@
 import nextra from 'nextra';
+import type { NextConfig } from 'next';
 
 const withNextra = nextra({});
 
@@ -15,4 +16,4 @@ export default withNextra({
       permanent: true,
     },
   ],
-});
+} satisfies NextConfig);
