@@ -2,8 +2,6 @@ import { DataIndexersCards } from '@components/cards';
 
 # Data Indexers
 
-Query NFTs, tokens, transactions, and events on Shape without running your own indexer.
-
 | Service | Best for |
 | --- | --- |
 | Alchemy NFT/Token/Transfers APIs | General-purpose queries, NFT metadata, token balances |
@@ -13,7 +11,7 @@ Query NFTs, tokens, transactions, and events on Shape without running your own i
 | Reservoir | NFT marketplace data (listings, sales, collection stats) |
 | SimpleHash | Cross-chain NFT and token metadata aggregation |
 
-Example: fetch NFTs owned by an address using the Alchemy NFT API.
+Fetch NFTs owned by an address using the Alchemy NFT API:
 
 ```ts
 const res = await fetch(
