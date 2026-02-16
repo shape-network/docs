@@ -17,17 +17,7 @@ cd my-shape-contract
 
 This scaffolds a project with a `Counter.sol` contract in `src/`.
 
-## 2. Configure for Shape Sepolia
-
-Add a Shape Sepolia profile to `foundry.toml`:
-
-```toml
-[profile.shape-sepolia]
-eth_rpc_url = "https://sepolia.shape.network"
-chain_id = 11011
-```
-
-## 3. Deploy
+## 2. Deploy
 
 ```bash
 forge create src/Counter.sol:Counter \
@@ -37,7 +27,7 @@ forge create src/Counter.sol:Counter \
 
 Save the `Deployed to` address from the output.
 
-## 4. Verify on the Explorer
+## 3. Verify on the Explorer
 
 ```bash
 forge verify-contract <DEPLOYED_ADDRESS> src/Counter.sol:Counter \
@@ -45,11 +35,9 @@ forge verify-contract <DEPLOYED_ADDRESS> src/Counter.sol:Counter \
   --verifier-url https://explorer-sepolia.shape.network/api/
 ```
 
-Replace `<DEPLOYED_ADDRESS>` with the address from step 3.
+Replace `<DEPLOYED_ADDRESS>` with the address from step 2.
 
-Once verified, your contract source code is readable on [Shape Sepolia Explorer](https://explorer-sepolia.shape.network).
-
-## 5. Deploy to Mainnet
+## 4. Deploy to Mainnet
 
 When ready for mainnet, use the mainnet RPC and verify against the mainnet explorer:
 
@@ -65,9 +53,9 @@ forge verify-contract <DEPLOYED_ADDRESS> src/Counter.sol:Counter \
   --verifier-url https://shapescan.xyz/api/
 ```
 
-## 6. Register for Gasback
+## 5. Register for Gasback
 
-Shape returns 80% of sequencer fees to contract owners. Register your deployed contract to start earning Gasback.
+Gasback returns 80% of sequencer fees to contract owners. Register your deployed contract to start earning.
 
 See [Registering Your Contract for Gasback](/tutorials/registering-contract-gasback) for the full walkthrough.
 
@@ -75,4 +63,4 @@ See [Registering Your Contract for Gasback](/tutorials/registering-contract-gasb
 
 - [Build a dApp](/building-on-shape/builder-kit) with the Shape Builder Kit
 - [Connect to Shape](/quick-start/connect-to-shape) from your frontend
-- [Gasback](/gasback) -- understand how fee reclamation works
+- [Gasback](/gasback) (how fee reclamation works)
