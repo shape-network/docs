@@ -1,0 +1,144 @@
+---
+title: Launch an NFT Collection on Shape
+---
+
+# Launch an NFT Collection on Shape
+
+Deploy an ERC-721 contract to Shape Sepolia, mint an NFT, and verify it on the block explorer.
+
+## Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) installed
+- Shape Sepolia ETH from the [Alchemy Faucet](https://www.alchemy.com/faucets/shape-sepolia)
+- A wallet private key funded with testnet ETH
+
+## 1. Set Up the Project
+
+```bash
+forge init my-nft && cd my-nft
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
+
+Add the OpenZeppelin remapping to `foundry.toml`:
+
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
+```
+
+## 2. Write the Contract
+
+Create `src/MyNFT.sol`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+
+contract MyNFT is ERC721, Ownable {
+    uint256 public totalSupply;
+    uint256 public constant MAX_SUPPLY = 1000;
+    string private _baseTokenURI;
+
+    constructor() ERC721("MyNFT", "MNFT") Ownable(msg.sender) {}
+
+    function mint(address to) external onlyOwner {
+        require(totalSupply < MAX_SUPPLY, "Max supply reached");
+        _mint(to, totalSupply);
+        totalSupply++;
+    }
+
+    function setBaseURI(string calldata baseURI) external onlyOwner {
+        _baseTokenURI = baseURI;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return _baseTokenURI;
+    }
+}
+```
+
+## 3. Test
+
+Create `test/MyNFT.t.sol`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {Test} from "forge-std/Test.sol";
+import {MyNFT} from "../src/MyNFT.sol";
+
+contract MyNFTTest is Test {
+    MyNFT nft;
+
+    function setUp() public {
+        nft = new MyNFT();
+    }
+
+    function test_mint() public {
+        nft.mint(address(this));
+        assertEq(nft.ownerOf(0), address(this));
+        assertEq(nft.totalSupply(), 1);
+    }
+}
+```
+
+```bash
+forge test
+```
+
+## 4. Deploy to Shape Sepolia
+
+```bash
+forge create src/MyNFT.sol:MyNFT \
+  --rpc-url https://sepolia.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+Save the `Deployed to` address from the output.
+
+## 5. Mint an NFT
+
+```bash
+cast send <CONTRACT_ADDRESS> "mint(address)" <YOUR_ADDRESS> \
+  --rpc-url https://sepolia.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+Confirm the mint:
+
+```bash
+cast call <CONTRACT_ADDRESS> "ownerOf(uint256)" 0 \
+  --rpc-url https://sepolia.shape.network
+```
+
+This returns your address, confirming token 0 was minted to you.
+
+## 6. Verify on Shapescan
+
+```bash
+forge verify-contract <CONTRACT_ADDRESS> src/MyNFT.sol:MyNFT \
+  --verifier blockscout \
+  --verifier-url https://explorer-sepolia.shape.network/api/
+```
+
+Once verified, view your contract at `https://explorer-sepolia.shape.network/address/<CONTRACT_ADDRESS>`.
+
+## 7. Register for Gasback
+
+Gasback returns 80% of sequencer fees to contract owners. Register your deployed contract to start earning.
+
+See [Registering Your Contract for Gasback](/tutorials/registering-contract-gasback) for the full walkthrough.
+
+## Next Steps
+
+- **Deploy to mainnet**: Use `--rpc-url https://mainnet.shape.network` and verify against `https://shapescan.xyz/api/`
+- **View on Deca**: Once on mainnet, see your collection at `https://deca.art/token/shape/<CONTRACT_ADDRESS>/<TOKEN_ID>`
+- **Add metadata**: Upload JSON metadata to IPFS with [Pinata](https://pinata.cloud), then call `setBaseURI` to point your tokens at it
+- [Build a dApp](/building-on-shape/builder-kit) with the Shape Builder Kit
