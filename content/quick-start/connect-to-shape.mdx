@@ -1,0 +1,84 @@
+# Connect to Shape
+
+Shape Mainnet runs on chain ID `360`. Shape Sepolia (testnet) runs on chain ID `11011`.
+
+## viem
+
+```ts
+import { createPublicClient, http } from 'viem';
+import { shape } from 'viem/chains';
+
+const client = createPublicClient({
+  chain: shape,
+  transport: http('https://mainnet.shape.network'),
+});
+```
+
+For Shape Sepolia, use `shapeSepolia` and the testnet RPC:
+
+```ts
+import { createPublicClient, http } from 'viem';
+import { shapeSepolia } from 'viem/chains';
+
+const client = createPublicClient({
+  chain: shapeSepolia,
+  transport: http('https://sepolia.shape.network'),
+});
+```
+
+## wagmi
+
+```ts
+import { http, createConfig } from 'wagmi';
+import { shape, shapeSepolia } from 'wagmi/chains';
+
+export const config = createConfig({
+  chains: [shape, shapeSepolia],
+  transports: {
+    [shape.id]: http('https://mainnet.shape.network'),
+    [shapeSepolia.id]: http('https://sepolia.shape.network'),
+  },
+});
+```
+
+## Foundry
+
+Add a profile to `foundry.toml`:
+
+```toml
+# foundry.toml
+[profile.shape-sepolia]
+eth_rpc_url = "https://sepolia.shape.network"
+chain_id = 11011
+```
+
+Use it with:
+
+```bash
+forge build --profile shape-sepolia
+```
+
+## ethers.js v6
+
+```ts
+import { JsonRpcProvider } from 'ethers';
+
+const provider = new JsonRpcProvider('https://mainnet.shape.network');
+```
+
+## Network Reference
+
+| | Mainnet | Sepolia |
+| --- | --- | --- |
+| Chain ID | `360` | `11011` |
+| RPC | `https://mainnet.shape.network` | `https://sepolia.shape.network` |
+| Explorer | [shapescan.xyz](https://shapescan.xyz) | [explorer-sepolia.shape.network](https://explorer-sepolia.shape.network) |
+| Currency | ETH | ETH |
+
+See [Network Information](/technical-details/network-information) for the full reference.
+
+import { Callout } from 'nextra/components';
+
+<Callout>
+  For production apps, use an [Alchemy RPC](https://www.alchemy.com/rpc/shape) for higher rate limits, WebSocket support, and enhanced APIs. Replace the public RPC URL with `https://shape-mainnet.g.alchemy.com/v2/YOUR_KEY`. Free tier available.
+</Callout>
