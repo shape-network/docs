@@ -26,7 +26,7 @@
 
 ## Technical Reference
 
-- [Network Information](https://docs.shape.network/technical-details/network-information): Mainnet chain ID 360, RPC https://mainnet.shape.network, explorer https://shapescan.xyz. Testnet chain ID 11011, RPC https://sepolia.shape.network
+- [Network Information](https://docs.shape.network/technical-details/network-information): Mainnet chain ID 360, RPC https://mainnet.shape.network, explorer https://shapescan.xyz. Testnet chain ID 11011, RPC https://sepolia.shape.network, explorer https://sepolia.shapescan.xyz
 - [Contract Addresses](https://docs.shape.network/technical-details/contract-addresses): L1 and L2 contract addresses for mainnet and Sepolia. Gasback contract: 0xf5e602c87d675E978F097503aedE4A766285a08B (mainnet), 0xdF329d59bC797907703F7c198dDA2d770fC45034 (testnet)
 - [Run a Node](https://docs.shape.network/technical-details/run-a-node): Run Shape mainnet and Sepolia nodes using op-node with custom rollup.json and genesis.json
 
