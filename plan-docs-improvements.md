@@ -493,20 +493,27 @@ Deviations from spec:
 - Moved Alchemy rate-limit callout to top of connect page (was buried below the reference table)
 - Added viem v2+/wagmi v2+ version requirement
 
-### Phase 2 (Tool Pages)
+### Phase 2 (Tool Pages) -- DONE
 
-Steps 1-8 can run in parallel. No dependencies.
+| Step | File | Type | Status |
+| ---- | ---- | ---- | ------ |
+| 1 | `content/tools/node-providers.mdx` | Edit | Done |
+| 2 | `content/tools/bridges.mdx` | Edit | Done |
+| 3 | `content/tools/data-indexers.mdx` | Edit | Done |
+| 4 | `content/tools/explorers.mdx` | Edit | Done |
+| 5 | `content/tools/faucets.mdx` | Edit | Done |
+| 6 | `content/tools/account-abstraction.mdx` | Edit | Done |
+| 7 | `content/tools/safes-asset-security.mdx` | Edit | Done |
+| 8 | `content/tools/sybil-resistance.mdx` | Edit | Done |
 
-| Step | File | Type |
-| ---- | ---- | ---- |
-| 1 | `content/tools/node-providers.mdx` | Edit |
-| 2 | `content/tools/bridges.mdx` | Edit |
-| 3 | `content/tools/data-indexers.mdx` | Edit |
-| 4 | `content/tools/explorers.mdx` | Edit |
-| 5 | `content/tools/faucets.mdx` | Edit |
-| 6 | `content/tools/account-abstraction.mdx` | Edit |
-| 7 | `content/tools/safes-asset-security.mdx` | Edit |
-| 8 | `content/tools/sybil-resistance.mdx` | Edit |
+Deviations from spec:
+- Cut all filler intro sentences that restated the page title ("Bridge ETH and tokens...", "Inspect transactions...", etc.)
+- Bridges table split into Deposits/Withdrawals columns instead of single "Speed" column (clarifies 7-day challenge period applies only to withdrawals)
+- Added Shapescan Sepolia row to explorers table (cards render 4 items, table had 3)
+- Fixed "80% of gas costs" to "80% of sequencer fees" on AA page (L1 data fees are not returned)
+- Removed inaccurate "preserving user privacy" claim from sybil resistance intro (only true of Passport, not Premint/Crossmint)
+- Faucets page: replaced 4-step walkthrough with one-liner (patronizing for the target audience)
+- Safes page: cut tagline intro, kept bullet descriptions only
 
 ### Phase 3 (NFT Tutorial)
 
