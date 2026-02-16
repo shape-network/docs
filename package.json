@@ -16,7 +16,7 @@
     "posthog-js": "^1.347.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "tailwind-merge": "^3.1.0",
+    "tailwind-merge": "^3.4.1",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
