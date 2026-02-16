@@ -50,6 +50,7 @@
 
 ## Tutorials
 
+- [Launch an NFT Collection](https://docs.shape.network/tutorials/mint-nft-collection): Deploy an ERC-721 contract on Shape with Foundry, mint an NFT, verify on Shapescan
 - [Register Contract for Gasback (Dashboard)](https://docs.shape.network/tutorials/registering-contract-gasback/dashboard): Step-by-step UI guide to register contracts via the Gasback dashboard
 - [Register Contract for Gasback (Programmatic)](https://docs.shape.network/tutorials/registering-contract-gasback/programmatically): Three Solidity approaches to register contracts for Gasback
 
