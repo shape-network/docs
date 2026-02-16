@@ -9,6 +9,12 @@
 - [Gasback](https://docs.shape.network/gasback): Claim back 80% of L2 sequencer fees users spend interacting with your contracts
 - [The Stack](https://docs.shape.network/the-stack): Dynamic NFT reputation system with bronze, silver, gold, and special medals
 
+## Quick Start
+
+- [Quick Start](https://docs.shape.network/quick-start): Developer onboarding hub for Shape
+- [Connect to Shape](https://docs.shape.network/quick-start/connect-to-shape): Configure viem, wagmi, Foundry, and ethers.js for Shape Mainnet (chain ID 360) and Shape Sepolia (chain ID 11011)
+- [Deploy a Contract](https://docs.shape.network/quick-start/deploy-a-contract): Deploy and verify a smart contract on Shape with Foundry
+
 ## Building on Shape
 
 - [Builder Kit](https://docs.shape.network/building-on-shape/builder-kit): Next.js starter with wallet connect (wagmi), NFT fetching, Shape RPC, and Shadcn UI

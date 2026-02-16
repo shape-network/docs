@@ -5,6 +5,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '/',
     '/getting-started',
+    '/quick-start',
+    '/quick-start/connect-to-shape',
+    '/quick-start/deploy-a-contract',
     '/gasback',
     '/the-stack',
     '/technical-details/network-information',
