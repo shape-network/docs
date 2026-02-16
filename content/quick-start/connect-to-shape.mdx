@@ -2,6 +2,14 @@
 
 Shape Mainnet runs on chain ID `360`. Shape Sepolia (testnet) runs on chain ID `11011`.
 
+import { Callout } from 'nextra/components';
+
+<Callout>
+  The public RPCs are rate-limited. For production apps, use [Alchemy](https://www.alchemy.com/rpc/shape) (`https://shape-mainnet.g.alchemy.com/v2/YOUR_KEY`). Free tier available.
+</Callout>
+
+The examples below use viem v2+ and wagmi v2+. Both export `shape` and `shapeSepolia` chain definitions.
+
 ## viem
 
 ```ts
@@ -52,12 +60,6 @@ eth_rpc_url = "https://sepolia.shape.network"
 chain_id = 11011
 ```
 
-Use it with:
-
-```bash
-forge build --profile shape-sepolia
-```
-
 ## ethers.js v6
 
 ```ts
@@ -76,9 +78,3 @@ const provider = new JsonRpcProvider('https://mainnet.shape.network');
 | Currency | ETH | ETH |
 
 See [Network Information](/technical-details/network-information) for the full reference.
-
-import { Callout } from 'nextra/components';
-
-<Callout>
-  For production apps, use an [Alchemy RPC](https://www.alchemy.com/rpc/shape) for higher rate limits, WebSocket support, and enhanced APIs. Replace the public RPC URL with `https://shape-mainnet.g.alchemy.com/v2/YOUR_KEY`. Free tier available.
-</Callout>
