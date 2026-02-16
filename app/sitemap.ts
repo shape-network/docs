@@ -4,7 +4,7 @@ import { paths } from '@paths';
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     '/',
-    '/getting-started',
+    '/wallet-setup',
     '/quick-start',
     '/quick-start/connect-to-shape',
     '/quick-start/deploy-a-contract',
