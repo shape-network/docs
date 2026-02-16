@@ -5,7 +5,7 @@
 ## Getting Started
 
 - [Introduction](https://docs.shape.network): Overview of Shape, the culture-first L2 for creators and the new NFT economy
-- [Getting Started](https://docs.shape.network/getting-started): Add Shape to your wallet, bridge ETH, mint your Stack
+- [Wallet Setup](https://docs.shape.network/wallet-setup): Add Shape to your wallet, bridge ETH, mint your Stack
 - [Gasback](https://docs.shape.network/gasback): Claim back 80% of L2 sequencer fees users spend interacting with your contracts
 - [The Stack](https://docs.shape.network/the-stack): Dynamic NFT reputation system with bronze, silver, gold, and special medals
 
