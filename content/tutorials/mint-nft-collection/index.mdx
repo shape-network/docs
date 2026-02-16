@@ -16,10 +16,11 @@ Deploy an ERC-721 contract to Shape Sepolia, mint an NFT, and verify it on the b
 
 ```bash
 forge init my-nft && cd my-nft
+rm src/Counter.sol test/Counter.t.sol script/Counter.s.sol
 forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
 
-Add the OpenZeppelin remapping to `foundry.toml`:
+Add the `remappings` line to `foundry.toml`:
 
 ```toml
 [profile.default]
@@ -96,6 +97,8 @@ forge test
 ## 4. Deploy to Shape Sepolia
 
 ```bash
+export PRIVATE_KEY=<YOUR_PRIVATE_KEY>
+
 forge create src/MyNFT.sol:MyNFT \
   --rpc-url https://sepolia.shape.network \
   --private-key $PRIVATE_KEY
@@ -118,7 +121,7 @@ cast call <CONTRACT_ADDRESS> "ownerOf(uint256)" 0 \
   --rpc-url https://sepolia.shape.network
 ```
 
-This returns your address, confirming token 0 was minted to you.
+This returns your address (ABI-encoded, zero-padded to 32 bytes).
 
 ## 6. Verify on Shapescan
 
@@ -132,9 +135,7 @@ Once verified, view your contract at `https://explorer-sepolia.shape.network/add
 
 ## 7. Register for Gasback
 
-Gasback returns 80% of sequencer fees to contract owners. Register your deployed contract to start earning.
-
-See [Registering Your Contract for Gasback](/tutorials/registering-contract-gasback) for the full walkthrough.
+Register your contract for [Gasback](/tutorials/registering-contract-gasback) to reclaim 80% of sequencer fees users spend interacting with it.
 
 ## Next Steps
 
