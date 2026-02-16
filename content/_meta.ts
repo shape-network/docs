@@ -3,6 +3,7 @@ import type { MetaRecord } from 'nextra';
 const meta: MetaRecord = {
   index: 'Introducing Shape',
   'getting-started': 'Getting Started',
+  'quick-start': 'Quick Start',
   gasback: 'Gasback',
   'the-stack': 'The Stack',
   'technical-details': 'Technical Details',
