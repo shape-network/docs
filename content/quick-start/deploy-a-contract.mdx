@@ -1,0 +1,78 @@
+# Deploy a Contract on Shape
+
+Deploy a smart contract to Shape Sepolia and verify it on the block explorer using Foundry.
+
+## Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) installed
+- Shape Sepolia ETH from the [Alchemy Faucet](https://www.alchemy.com/faucets/shape-sepolia)
+- A wallet private key funded with testnet ETH
+
+## 1. Create a Project
+
+```bash
+forge init my-shape-contract
+cd my-shape-contract
+```
+
+This scaffolds a project with a `Counter.sol` contract in `src/`.
+
+## 2. Configure for Shape Sepolia
+
+Add a Shape Sepolia profile to `foundry.toml`:
+
+```toml
+[profile.shape-sepolia]
+eth_rpc_url = "https://sepolia.shape.network"
+chain_id = 11011
+```
+
+## 3. Deploy
+
+```bash
+forge create src/Counter.sol:Counter \
+  --rpc-url https://sepolia.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+Save the `Deployed to` address from the output.
+
+## 4. Verify on the Explorer
+
+```bash
+forge verify-contract <DEPLOYED_ADDRESS> src/Counter.sol:Counter \
+  --verifier blockscout \
+  --verifier-url https://explorer-sepolia.shape.network/api/
+```
+
+Replace `<DEPLOYED_ADDRESS>` with the address from step 3.
+
+Once verified, your contract source code is readable on [Shape Sepolia Explorer](https://explorer-sepolia.shape.network).
+
+## 5. Deploy to Mainnet
+
+When ready for mainnet, use the mainnet RPC and verify against the mainnet explorer:
+
+```bash
+forge create src/Counter.sol:Counter \
+  --rpc-url https://mainnet.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+```bash
+forge verify-contract <DEPLOYED_ADDRESS> src/Counter.sol:Counter \
+  --verifier blockscout \
+  --verifier-url https://shapescan.xyz/api/
+```
+
+## 6. Register for Gasback
+
+Shape returns 80% of sequencer fees to contract owners. Register your deployed contract to start earning Gasback.
+
+See [Registering Your Contract for Gasback](/tutorials/registering-contract-gasback) for the full walkthrough.
+
+## Next Steps
+
+- [Build a dApp](/building-on-shape/builder-kit) with the Shape Builder Kit
+- [Connect to Shape](/quick-start/connect-to-shape) from your frontend
+- [Gasback](/gasback) -- understand how fee reclamation works
