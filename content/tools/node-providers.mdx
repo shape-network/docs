@@ -2,4 +2,17 @@ import { NodeProvidersCards } from '@components/cards';
 
 # Node Providers
 
+RPC endpoints for reading onchain data and submitting transactions on Shape.
+
+| Provider | Endpoint | Notes |
+| --- | --- | --- |
+| Public RPC | `https://mainnet.shape.network` | Rate-limited, suitable for development |
+| Alchemy | `https://shape-mainnet.g.alchemy.com/v2/YOUR_KEY` | Higher limits, WebSocket, enhanced APIs |
+
+For Shape Sepolia, use `https://sepolia.shape.network` (public) or `https://shape-sepolia.g.alchemy.com/v2/YOUR_KEY` (Alchemy).
+
+WebSocket: `wss://shape-mainnet.g.alchemy.com/v2/YOUR_KEY`
+
+For production apps, use Alchemy for reliability and access to enhanced APIs (NFT, Token, Webhooks). [Free tier available](https://www.alchemy.com/rpc/shape).
+
 <NodeProvidersCards />
