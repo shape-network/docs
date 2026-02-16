@@ -12,7 +12,7 @@
     "next": "^16.1.6",
     "nextra": "^4.6.1",
     "nextra-theme-docs": "^4.6.1",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.6",
     "posthog-js": "^1.347.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
