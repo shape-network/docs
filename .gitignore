@@ -3,4 +3,3 @@ node_modules
 .env
 _pagefind/
 .claude/settings.local.json
-plan-docs-improvements.md
