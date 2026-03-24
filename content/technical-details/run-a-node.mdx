@@ -255,11 +255,10 @@ Since Ecotone, batch data is posted as [EIP-4844 blobs](https://eips.ethereum.or
 You need a blob archiver if your node may go offline for 18+ days or you are syncing from genesis without a recent snapshot.
 
 Options:
-1. Run a beacon node with pruning disabled (e.g., Lighthouse with `--prune-blobs=false`)
-2. Deploy a [blob-archiver](https://github.com/base/blob-archiver)
-3. Use a third-party blob archive service
+1. Run an L1 beacon node with pruning disabled (e.g., Lighthouse with `--prune-blobs=false`)
+2. Use a third-party beacon endpoint that retains blobs beyond the 18-day window
 
-Point op-node at a fallback beacon endpoint that retains old blobs:
+Point op-node at a fallback endpoint that has the old blobs:
 
 ```bash
 --l1.beacon-fallbacks=<archiver-endpoint>
