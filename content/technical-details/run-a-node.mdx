@@ -1,52 +1,325 @@
 # Run a Node
 
-Learn how to run your own Shape Mainnet and Shape Sepolia nodes.
+Learn how to run your own Shape Mainnet or Shape Sepolia node.
 
-Follow [these instructions](https://github.com/ethereum-optimism/specs/blob/main/specs/protocol/rollup-node.md) to learn how to run your own Shape node.
+Shape is an [OP Stack](https://docs.optimism.io/stack/getting-started) rollup. Running a Shape node means running two clients that communicate via the [Engine API](https://github.com/ethereum/execution-apis/blob/main/src/engine/common.md):
 
-The process is the same as running a standard op-node, but using a different `rollup.json` and `genesis.json`, except you will need to add the following commands
+- **Execution client (op-geth):** Provides the EVM execution environment, maintains state, and handles transactions.
+- **Consensus client (op-node):** Derives the L2 chain from L1 data, relays blocks, and drives the execution client via the Engine API.
 
-## Shape Mainnet
+Both clients are required. They authenticate with each other using a shared JWT secret.
 
-[rollup.json](https://arweave.net/Lh9vjNsHKHOKzGwWwlvVz2tsxcL_h5Wc-Ga0udO3Xm0)
+## Prerequisites
 
-[genesis.json](https://arweave.net/LrSrsEJsUtSWNAzkpKqkwE9RG3JZP1SmlOQNlTu8Nxk)
+### Hardware requirements
 
-Use the following override flags when running op-node:
+| Component | Full node | Archive node |
+| --------- | --------- | ------------ |
+| CPU | Reasonably modern, multi-core | Same |
+| RAM | 16 GB minimum | 16 GB minimum |
+| Storage | 700 GB+ SSD (grows ~100 GB / 6 months) | 14 TB+ NVMe SSD (grows ~3.5 TB / 6 months) |
 
+Archive nodes should use NVMe SSDs. op-geth's `--datadir.ancient` flag can offload older data to a cheaper HDD.
+
+### Software dependencies
+
+- [Go](https://go.dev/dl/) 1.21+
+- Make
+- Git
+- An **L1 Ethereum RPC endpoint** (e.g., [Alchemy](https://www.alchemy.com/), Infura, or your own node)
+- An **L1 Beacon (consensus) endpoint** (required since Ecotone for blob retrieval)
+
+### Network ports
+
+Expose the following ports for P2P sync:
+
+| Port | Protocol | Purpose |
+| ----- | -------- | ------- |
+| 30303 | TCP + UDP | op-geth peer discovery and block propagation |
+| 9222 | TCP + UDP | op-node peer discovery |
+
+## Option A: Sync from snapshot (fastest)
+
+Using an [Alchemy snapshot](https://www.alchemy.com/snapshots/shape) is the fastest way to bootstrap a node. Instead of syncing from genesis, you download a compressed chaindata archive and start near the chain tip.
+
+### 1. Download the snapshot
+
+Visit [alchemy.com/snapshots/shape](https://www.alchemy.com/snapshots/shape) and download the latest `.tar.lz4` snapshot for your network (mainnet or Sepolia).
+
+### 2. Install lz4 and decompress
+
+```bash
+# macOS
+brew install lz4
+
+# Ubuntu/Debian
+sudo apt-get install -y lz4
 ```
---override.granite=1727370000
---override.holocene=1740139200
+
+If you have existing data, stop your node and clear the old chaindata first:
+
+```bash
+rm -rf <DATADIR>/geth/chaindata
+rm -rf <DATADIR>/geth/lightchaindata
 ```
 
-## Shape Sepolia
+Decompress the snapshot:
 
-[rollup.json](https://arweave.net/gSb3hOzLaBIBy-AyWA2O2_03sfXJ-IwPqmV6Mhstmj8)
-
-[genesis.json](https://arweave.net/nw6opum2ALT9T39TSAAK_Wq0Z75aZJWd6J2RmiWHm_s)
-
-Use the following override flags when running op-node:
-
+```bash
+lz4 -c -d <snapshot-file>.tar.lz4 | tar -x -C <DATADIR>/geth/
 ```
---override.ecotone=0
---override.fjord=1721732400
---override.granite=1727197200
---override.holocene=1739880000
---override.pectrablobschedule=1742925600
+
+### 3. Continue to [Configure and run](#configure-and-run)
+
+After decompression, follow the steps below to generate a JWT secret and start both clients. Your node should be in sync within minutes.
+
+## Option B: Sync from genesis
+
+### 1. Build op-geth
+
+```bash
+git clone https://github.com/ethereum-optimism/op-geth.git
+cd op-geth
+git checkout <latest-release-tag>
+make geth
+```
+
+Check [op-geth releases](https://github.com/ethereum-optimism/op-geth/releases) for the latest tag.
+
+### 2. Build op-node
+
+```bash
+git clone https://github.com/ethereum-optimism/optimism.git
+cd optimism
+git checkout <latest-release-tag>
+cd op-node
+just
+```
+
+Check [optimism releases](https://github.com/ethereum-optimism/optimism/releases) for the latest tag.
+
+### 3. Download genesis and rollup configs
+
+**Shape Mainnet:**
+- [rollup.json](https://arweave.net/Lh9vjNsHKHOKzGwWwlvVz2tsxcL_h5Wc-Ga0udO3Xm0)
+- [genesis.json](https://arweave.net/LrSrsEJsUtSWNAzkpKqkwE9RG3JZP1SmlOQNlTu8Nxk)
+
+**Shape Sepolia:**
+- [rollup.json](https://arweave.net/gSb3hOzLaBIBy-AyWA2O2_03sfXJ-IwPqmV6Mhstmj8)
+- [genesis.json](https://arweave.net/nw6opum2ALT9T39TSAAK_Wq0Z75aZJWd6J2RmiWHm_s)
+
+### 4. Initialize the datadir
+
+```bash
+./build/bin/geth init --datadir=<DATADIR> genesis.json
+```
+
+### 5. Continue to [Configure and run](#configure-and-run)
+
+## Configure and run
+
+### 1. Generate a JWT secret
+
+The execution client and op-node authenticate over the Engine API using a shared secret:
+
+```bash
+openssl rand -hex 32 > jwt.txt
+```
+
+### 2. Start op-geth
+
+**Shape Mainnet:**
+
+```bash
+./build/bin/geth \
+  --datadir=<DATADIR> \
+  --http \
+  --http.port=8545 \
+  --http.addr=0.0.0.0 \
+  --http.api=eth,net,web3 \
+  --ws \
+  --ws.port=8546 \
+  --ws.addr=0.0.0.0 \
+  --ws.api=eth,net,web3 \
+  --authrpc.addr=localhost \
+  --authrpc.port=8551 \
+  --authrpc.jwtsecret=./jwt.txt \
+  --authrpc.vhosts=* \
+  --verbosity=3 \
+  --rollup.sequencerhttp=https://mainnet.shape.network \
+  --rollup.disabletxpoolgossip=true \
+  --syncmode=snap
+```
+
+**Shape Sepolia:** Replace `--rollup.sequencerhttp` with `https://sepolia.shape.network`.
+
+**For archive mode:** Add `--gcmode=archive` and change `--syncmode=full`.
+
+### 3. Start op-node
+
+Set your L1 endpoints:
+
+```bash
+export L1_RPC_URL=<your-l1-ethereum-rpc>       # e.g., https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY
+export L1_RPC_KIND=<provider-type>              # alchemy, quicknode, infura, basic, etc.
+export L1_BEACON_URL=<your-l1-beacon-endpoint>  # e.g., https://ethereum-beacon-api.publicnode.com
+```
+
+**Shape Mainnet:**
+
+```bash
+./bin/op-node \
+  --l1=$L1_RPC_URL \
+  --l1.rpckind=$L1_RPC_KIND \
+  --l1.beacon=$L1_BEACON_URL \
+  --l2=ws://localhost:8551 \
+  --l2.jwt-secret=./jwt.txt \
+  --rollup.config=./rollup.json \
+  --l2.enginekind=geth \
+  --syncmode=execution-layer \
+  --override.granite=1727370000 \
+  --override.holocene=1740139200 \
+  --p2p.listen.tcp=9222 \
+  --p2p.listen.udp=9222 \
+  --rpc.addr=0.0.0.0 \
+  --rpc.port=9545 \
+  --metrics.enabled \
+  --metrics.port=7300
+```
+
+**Shape Sepolia:**
+
+```bash
+./bin/op-node \
+  --l1=$L1_RPC_URL \
+  --l1.rpckind=$L1_RPC_KIND \
+  --l1.beacon=$L1_BEACON_URL \
+  --l2=ws://localhost:8551 \
+  --l2.jwt-secret=./jwt.txt \
+  --rollup.config=./rollup.json \
+  --l2.enginekind=geth \
+  --syncmode=execution-layer \
+  --override.ecotone=0 \
+  --override.fjord=1721732400 \
+  --override.granite=1727197200 \
+  --override.holocene=1739880000 \
+  --override.pectrablobschedule=1742925600 \
+  --p2p.listen.tcp=9222 \
+  --p2p.listen.udp=9222 \
+  --rpc.addr=0.0.0.0 \
+  --rpc.port=9545 \
+  --metrics.enabled \
+  --metrics.port=7300
+```
+
+For Sepolia, use a Sepolia L1 RPC for `L1_RPC_URL`.
+
+### Sync modes
+
+| Mode | op-node flag | op-geth flag | Use case |
+| ---- | ------------ | ------------ | -------- |
+| Snap sync | `--syncmode=execution-layer` | `--syncmode=snap` (default) | Fastest for full nodes. Downloads state at chain tip via P2P. |
+| Full sync | `--syncmode=execution-layer` | `--syncmode=full` | Required for archive nodes. Executes every block. |
+
+## Verifying your node
+
+After startup you should see:
+
+1. **op-node:** Logs showing `Syncing beacon headers` as it downloads headers from peers.
+2. **op-geth:** Logs showing state download progress (percentage, data volumes).
+3. Once synced, both clients log new blocks as they arrive every 2 seconds.
+
+Check sync status via JSON-RPC:
+
+```bash
+curl -s -X POST http://localhost:8545 \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}'
+```
+
+Returns `false` when fully synced.
+
+## Monitoring
+
+op-node exposes Prometheus metrics at `http://localhost:7300/metrics` when started with `--metrics.enabled`. Key metrics:
+
+| Metric | What it tells you |
+| ------ | ----------------- |
+| `op_node_default_refs_number` | Current block heights (L1/L2). Stalled values = halted sync. |
+| `op_node_default_peer_count` | Connected peers. Zero peers = falling back to slow L1-only sync. |
+| `op_node_default_rpc_client_request_duration_seconds` | RPC latency. Spikes indicate L1 provider bottlenecks. |
+
+## Blob archiver
+
+Since Ecotone, batch data is posted as [EIP-4844 blobs](https://eips.ethereum.org/EIPS/eip-4844). Standard beacon nodes prune blobs after ~18 days.
+
+**You need a blob archiver if:**
+- Your node may go offline for more than 18 days
+- You are syncing from genesis (not a recent snapshot)
+
+Options:
+1. Run a beacon node with pruning disabled (e.g., Lighthouse with `--prune-blobs=false`)
+2. Deploy a [blob-archiver](https://github.com/base-org/blob-archiver)
+3. Use a third-party blob archive service
+
+Configure on op-node:
+
+```bash
+--l1.beacon-archiver=<archiver-endpoint>
 ```
 
 ## Troubleshooting
 
-If your node is stalling, failing to find peers, or otherwise unresponsive, try passing the bootnode enodes in directly with `--p2p.bootnodes` in op-node:
+### Node stalling or can't find peers
 
-### Shape-Mainnet - op-node bootnodes
+Pass the bootnode enodes directly to op-node with `--p2p.bootnodes`:
 
-```json
-p2p.bootnodes=enode://ae31be7c6596f4bc3657f90b65a1569c7b0db10c976649f06fe5cfb26139064d78d22b41aede293aa7358fc336d086051ac7fce78f063dce89e1da19c7b88aee@34.228.226.23:0?discport=30301,enode://0bea78f02c9bee58326b3a612dae63dc5a0193fb3dfc9be687c9757d25606405ef9f87810157598fce35688bdb5b3834dc6283afab6dc5774abbd6c5a7b17cea@3.85.27.162:0?discport=30301
+**Shape Mainnet:**
+
+```
+--p2p.bootnodes=enode://ae31be7c6596f4bc3657f90b65a1569c7b0db10c976649f06fe5cfb26139064d78d22b41aede293aa7358fc336d086051ac7fce78f063dce89e1da19c7b88aee@34.228.226.23:0?discport=30301,enode://0bea78f02c9bee58326b3a612dae63dc5a0193fb3dfc9be687c9757d25606405ef9f87810157598fce35688bdb5b3834dc6283afab6dc5774abbd6c5a7b17cea@3.85.27.162:0?discport=30301
 ```
 
-### Shape-Sepolia - op-node bootnodes
+**Shape Sepolia:**
 
-```json
-p2p.bootnodes=enode://34fc07c447b843f3915f72cae27daeda7f2f8c3ea4b9132aed188387d3208d1d5cd7eeea58d30d038c14f985a5b108ad6b2172815ed8b757c9de9f609741b2a6@34.228.9.78:0?discport=30301,enode://61841b7682f808f5ce8222f15d7de7f118a2c2c3e342fe42ea41e987ae22fb90e49ef2b5f394897e791c33c6fc59d7ad064851ee653badb2d6ece7a94040944b@54.91.75.177:0?discport=30301
 ```
+--p2p.bootnodes=enode://34fc07c447b843f3915f72cae27daeda7f2f8c3ea4b9132aed188387d3208d1d5cd7eeea58d30d038c14f985a5b108ad6b2172815ed8b757c9de9f609741b2a6@34.228.9.78:0?discport=30301,enode://61841b7682f808f5ce8222f15d7de7f118a2c2c3e342fe42ea41e987ae22fb90e49ef2b5f394897e791c33c6fc59d7ad064851ee653badb2d6ece7a94040944b@54.91.75.177:0?discport=30301
+```
+
+### 401 Unauthorized: signature invalid
+
+The JWT secret doesn't match between op-node and op-geth. Ensure both point to the same `jwt.txt` file.
+
+### 403 Forbidden: invalid host specified
+
+Add `--authrpc.vhosts=*` to op-geth, or set it to the specific hostname op-node uses to connect.
+
+### P2P directory permission denied
+
+op-node can't write to its P2P discovery directory. Either grant write access or redirect with:
+
+```bash
+--p2p.discovery.path=/path/with/write/access
+--p2p.peerstore.path=/path/with/write/access
+```
+
+### Wrong chain / mismatched genesis
+
+Verify that:
+- `L1_RPC_URL` points to the correct L1 network (Ethereum mainnet for Shape, Sepolia for Shape Sepolia)
+- `rollup.json` matches the network you intend to run
+- op-geth was initialized with the correct `genesis.json`
+
+### Unclean shutdown detected
+
+op-geth warns about unclean shutdown on startup. This usually recovers automatically. If the database is corrupted beyond repair, re-initialize with genesis or restore from a [snapshot](https://www.alchemy.com/snapshots/shape).
+
+## References
+
+- [Optimism node operator docs](https://docs.optimism.io/node-operators/overview)
+- [Run a node from source (OP docs)](https://docs.optimism.io/node-operators/tutorials/run-node-from-source)
+- [Build from source (OP docs)](https://docs.optimism.io/node-operators/tutorials/node-from-source)
+- [Alchemy Shape snapshots](https://www.alchemy.com/snapshots/shape)
+- [op-node configuration reference](https://docs.optimism.io/node-operators/reference/op-node-config)
+- [op-geth configuration reference](https://docs.optimism.io/node-operators/reference/op-geth-config)
+- [OP Stack troubleshooting](https://docs.optimism.io/node-operators/guides/troubleshooting)
