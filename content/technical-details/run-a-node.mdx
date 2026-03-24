@@ -1,13 +1,9 @@
 # Run a Node
 
-Learn how to run your own Shape Mainnet or Shape Sepolia node.
+Shape is an [OP Stack](https://docs.optimism.io/stack/getting-started) rollup. Running a Shape node requires two clients that talk over the [Engine API](https://github.com/ethereum/execution-apis/blob/main/src/engine/common.md) and authenticate with a shared JWT secret:
 
-Shape is an [OP Stack](https://docs.optimism.io/stack/getting-started) rollup. Running a Shape node means running two clients that communicate via the [Engine API](https://github.com/ethereum/execution-apis/blob/main/src/engine/common.md):
-
-- **Execution client (op-geth):** Provides the EVM execution environment, maintains state, and handles transactions.
-- **Consensus client (op-node):** Derives the L2 chain from L1 data, relays blocks, and drives the execution client via the Engine API.
-
-Both clients are required. They authenticate with each other using a shared JWT secret.
+- **Execution client (op-geth)** runs the EVM and stores chain state.
+- **Consensus client (op-node)** derives the L2 chain from L1 data and feeds blocks to the execution client.
 
 ## Prerequisites
 
@@ -40,7 +36,7 @@ Expose the following ports for P2P sync:
 
 ## Option A: Sync from snapshot (fastest)
 
-Using an [Alchemy snapshot](https://www.alchemy.com/snapshots/shape) is the fastest way to bootstrap a node. Instead of syncing from genesis, you download a compressed chaindata archive and start near the chain tip.
+[Alchemy snapshots](https://www.alchemy.com/snapshots/shape) let you skip the full sync by downloading a compressed chaindata archive and starting near the chain tip.
 
 ### 1. Download the snapshot
 
@@ -71,7 +67,7 @@ lz4 -c -d <snapshot-file>.tar.lz4 | tar -x -C <DATADIR>/geth/
 
 ### 3. Continue to [Configure and run](#configure-and-run)
 
-After decompression, follow the steps below to generate a JWT secret and start both clients. Your node should be in sync within minutes.
+Your node should be in sync within minutes of starting.
 
 ## Option B: Sync from genesis
 
@@ -120,7 +116,7 @@ Check [optimism releases](https://github.com/ethereum-optimism/optimism/releases
 
 ### 1. Generate a JWT secret
 
-The execution client and op-node authenticate over the Engine API using a shared secret:
+op-geth and op-node authenticate over the Engine API with a shared secret:
 
 ```bash
 openssl rand -hex 32 > jwt.txt
@@ -218,16 +214,16 @@ For Sepolia, use a Sepolia L1 RPC for `L1_RPC_URL`.
 
 | Mode | op-node flag | op-geth flag | Use case |
 | ---- | ------------ | ------------ | -------- |
-| Snap sync | `--syncmode=execution-layer` | `--syncmode=snap` (default) | Fastest for full nodes. Downloads state at chain tip via P2P. |
-| Full sync | `--syncmode=execution-layer` | `--syncmode=full` | Required for archive nodes. Executes every block. |
+| Snap sync | `--syncmode=execution-layer` | `--syncmode=snap` (default) | Downloads state at chain tip via P2P. Fastest for full nodes. |
+| Full sync | `--syncmode=execution-layer` | `--syncmode=full` | Executes every block. Required for archive nodes. |
 
 ## Verifying your node
 
-After startup you should see:
+After startup, look for:
 
-1. **op-node:** Logs showing `Syncing beacon headers` as it downloads headers from peers.
-2. **op-geth:** Logs showing state download progress (percentage, data volumes).
-3. Once synced, both clients log new blocks as they arrive every 2 seconds.
+1. op-node logs showing `Syncing beacon headers` as it downloads headers from peers.
+2. op-geth logs showing state download progress (percentage and data volumes).
+3. Once caught up, both clients log new blocks every 2 seconds.
 
 Check sync status via JSON-RPC:
 
@@ -241,21 +237,19 @@ Returns `false` when fully synced.
 
 ## Monitoring
 
-op-node exposes Prometheus metrics at `http://localhost:7300/metrics` when started with `--metrics.enabled`. Key metrics:
+op-node exposes Prometheus metrics at `http://localhost:7300/metrics` when started with `--metrics.enabled`.
 
 | Metric | What it tells you |
 | ------ | ----------------- |
-| `op_node_default_refs_number` | Current block heights (L1/L2). Stalled values = halted sync. |
-| `op_node_default_peer_count` | Connected peers. Zero peers = falling back to slow L1-only sync. |
-| `op_node_default_rpc_client_request_duration_seconds` | RPC latency. Spikes indicate L1 provider bottlenecks. |
+| `op_node_default_refs_number` | Current L1/L2 block heights. If these stall, sync has stopped. |
+| `op_node_default_peer_count` | Connected peers. Zero means the node falls back to slow L1-only derivation. |
+| `op_node_default_rpc_client_request_duration_seconds` | RPC call latency. Spikes usually point to your L1 provider. |
 
 ## Blob archiver
 
 Since Ecotone, batch data is posted as [EIP-4844 blobs](https://eips.ethereum.org/EIPS/eip-4844). Standard beacon nodes prune blobs after ~18 days.
 
-**You need a blob archiver if:**
-- Your node may go offline for more than 18 days
-- You are syncing from genesis (not a recent snapshot)
+You need a blob archiver if your node may go offline for 18+ days or you are syncing from genesis without a recent snapshot.
 
 Options:
 1. Run a beacon node with pruning disabled (e.g., Lighthouse with `--prune-blobs=false`)
@@ -312,7 +306,7 @@ Verify that:
 
 ### Unclean shutdown detected
 
-op-geth warns about unclean shutdown on startup. This usually recovers automatically. If the database is corrupted beyond repair, re-initialize with genesis or restore from a [snapshot](https://www.alchemy.com/snapshots/shape).
+op-geth prints this warning on startup after a crash or kill. It usually recovers on its own. If the database is unrecoverable, re-initialize from genesis or restore from a [snapshot](https://www.alchemy.com/snapshots/shape).
 
 ## References
 
