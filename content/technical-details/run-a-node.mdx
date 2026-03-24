@@ -20,7 +20,8 @@ Archive nodes should use NVMe SSDs. op-geth's `--datadir.ancient` flag can offlo
 ### Software dependencies
 
 - [Go](https://go.dev/dl/) 1.21+
-- Make
+- [just](https://github.com/casey/just#installation) (op-node build tool)
+- Make (op-geth build tool)
 - Git
 - An **L1 Ethereum RPC endpoint** (e.g., [Alchemy](https://www.alchemy.com/), Infura, or your own node)
 - An **L1 Beacon (consensus) endpoint** (required since Ecotone for blob retrieval)
@@ -177,7 +178,7 @@ export L1_BEACON_URL=<your-l1-beacon-endpoint>  # e.g., https://ethereum-beacon-
   --override.holocene=1740139200 \
   --p2p.listen.tcp=9222 \
   --p2p.listen.udp=9222 \
-  --rpc.addr=0.0.0.0 \
+  --rpc.addr=127.0.0.1 \
   --rpc.port=9545 \
   --metrics.enabled \
   --metrics.port=7300
@@ -202,13 +203,15 @@ export L1_BEACON_URL=<your-l1-beacon-endpoint>  # e.g., https://ethereum-beacon-
   --override.pectrablobschedule=1742925600 \
   --p2p.listen.tcp=9222 \
   --p2p.listen.udp=9222 \
-  --rpc.addr=0.0.0.0 \
+  --rpc.addr=127.0.0.1 \
   --rpc.port=9545 \
   --metrics.enabled \
   --metrics.port=7300
 ```
 
 For Sepolia, use a Sepolia L1 RPC for `L1_RPC_URL`.
+
+> **Do not expose the op-node RPC publicly.** The `--rpc.addr` should be `127.0.0.1` (localhost) unless you have a specific reason and a firewall in place.
 
 ### Sync modes
 
@@ -253,13 +256,13 @@ You need a blob archiver if your node may go offline for 18+ days or you are syn
 
 Options:
 1. Run a beacon node with pruning disabled (e.g., Lighthouse with `--prune-blobs=false`)
-2. Deploy a [blob-archiver](https://github.com/base-org/blob-archiver)
+2. Deploy a [blob-archiver](https://github.com/base/blob-archiver)
 3. Use a third-party blob archive service
 
-Configure on op-node:
+Point op-node at a fallback beacon endpoint that retains old blobs:
 
 ```bash
---l1.beacon-archiver=<archiver-endpoint>
+--l1.beacon-fallbacks=<archiver-endpoint>
 ```
 
 ## Troubleshooting
