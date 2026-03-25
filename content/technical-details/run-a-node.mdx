@@ -60,23 +60,23 @@ Build both binaries first. You need the same `op-geth` and `op-node` binaries wh
 ```bash
 git clone https://github.com/ethereum-optimism/op-geth.git "$OP_GETH_DIR"
 cd "$OP_GETH_DIR"
-git checkout <latest-release-tag>
+git checkout <required-release-branch>
 make geth
 ```
 
-Check [op-geth releases](https://github.com/ethereum-optimism/op-geth/releases) for the latest tag.
+Check [op-geth releases](https://github.com/ethereum-optimism/op-geth/releases) for the required release branch.
 
 ### 2. Build op-node
 
 ```bash
 git clone https://github.com/ethereum-optimism/optimism.git "$OPTIMISM_DIR"
 cd "$OPTIMISM_DIR"
-git checkout <latest-release-tag>
+git checkout <required-release-branch>
 cd "$OP_NODE_DIR"
 just
 ```
 
-Check [optimism releases](https://github.com/ethereum-optimism/optimism/releases) for the latest tag.
+Check [optimism releases](https://github.com/ethereum-optimism/optimism/releases) for the required release branch.
 
 ## Option A: Sync from snapshot (fastest)
 
@@ -207,7 +207,7 @@ export L1_BEACON_URL=<your-l1-beacon-endpoint>  # e.g., https://ethereum-beacon-
   --l2.enginekind=geth \
   --syncmode=execution-layer \
   --override.granite=1727370000 \
-  --override.holocene=1740139200 \
+  --override.holocene=1739880000 \
   --p2p.listen.tcp=9222 \
   --p2p.listen.udp=9222 \
   --rpc.addr=127.0.0.1 \
@@ -232,7 +232,6 @@ export L1_BEACON_URL=<your-l1-beacon-endpoint>  # e.g., https://ethereum-beacon-
   --override.fjord=1721732400 \
   --override.granite=1727197200 \
   --override.holocene=1739880000 \
-  --override.pectrablobschedule=1742925600 \
   --p2p.listen.tcp=9222 \
   --p2p.listen.udp=9222 \
   --rpc.addr=127.0.0.1 \
@@ -256,7 +255,7 @@ For Sepolia, use a Sepolia L1 RPC for `L1_RPC_URL`.
 
 After startup, look for:
 
-1. op-node logs showing `Syncing beacon headers` as it downloads headers from peers.
+1. op-geth logs showing `Syncing beacon headers` as it downloads headers from peers.
 2. op-geth logs showing state download progress (percentage and data volumes).
 3. Once caught up, both clients log new blocks every 2 seconds.
 
@@ -277,7 +276,7 @@ op-node exposes Prometheus metrics at `http://localhost:7300/metrics` when start
 | Metric | What it tells you |
 | ------ | ----------------- |
 | `op_node_default_refs_number` | Current L1/L2 block heights. If these stall, sync has stopped. |
-| `op_node_default_peer_count` | Connected peers. Zero means the node falls back to slow L1-only derivation. |
+| `op_node_default_p2p_peer_count` | Connected peers. Zero means the node falls back to slow L1-only derivation. |
 | `op_node_default_rpc_client_request_duration_seconds` | RPC call latency. Spikes usually point to your L1 provider. |
 
 ## Blob archiver
