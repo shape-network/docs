@@ -123,7 +123,62 @@ cast call <CONTRACT_ADDRESS> "ownerOf(uint256)" 0 \
 
 This returns your address (ABI-encoded, zero-padded to 32 bytes).
 
-## 6. Verify on Shapescan
+## 6. Optional: Let Users Mint From Another Chain
+
+If your mint UI should let users start from Ethereum, Base, Arbitrum, or another supported chain, use Relay cross-chain call execution. The UI can let the user pay from an origin-chain balance while Relay executes the NFT mint call on Shape.
+
+The most important contract detail is to mint to an explicit recipient, like `mint(address to)`, instead of relying only on `msg.sender`. Relay's Shape-side address executes the destination call, so your UI should encode the buyer's address into the mint calldata and your contract should allow the Relay address to call that mint path. Treat this as a narrow exception: most arbitrary addresses should still be blocked from minting this way, but the Relay executor or relayer address you configure for Shape needs permission to call the function and mint the NFT to the recipient.
+
+```ts
+import { getClient } from '@relayprotocol/relay-sdk';
+import { encodeFunctionData, parseEther, zeroAddress } from 'viem';
+
+const relayClient = getClient();
+const shapeSepoliaChainId = 11011; // Use 360 for Shape mainnet.
+const mintPrice = parseEther('0.01');
+
+const callData = encodeFunctionData({
+  abi: nftAbi,
+  functionName: 'mint',
+  args: [userAddress],
+});
+
+const quote = await relayClient.actions.getQuote({
+  wallet,
+  chainId: originChainId,
+  toChainId: shapeSepoliaChainId,
+  currency: zeroAddress,
+  toCurrency: zeroAddress,
+  user: userAddress,
+  recipient: userAddress,
+  amount: mintPrice.toString(),
+  tradeType: 'EXACT_OUTPUT',
+  txs: [
+    {
+      to: nftContractAddress,
+      value: mintPrice.toString(),
+      data: callData,
+    },
+  ],
+});
+
+await relayClient.actions.execute({
+  quote,
+  wallet,
+  onProgress: (progress) => {
+    // Use this to show states like:
+    // confirm in wallet -> origin transaction submitted -> relaying -> minted
+  },
+});
+```
+
+For a free mint, set the mint transaction `value` and quote `amount` to `"0"`. For a paid mint, use `EXACT_OUTPUT` with the exact ETH value your mint call requires on Shape. Keep quotes fresh, check the user's origin-chain balance before enabling the mint button, and show a clear error if Relay has insufficient liquidity or the user lacks enough ETH for the amount, Relay fees, and origin-chain gas.
+
+The Stack mint UI uses the same pattern, with one extra convenience: users can optionally send additional ETH to themselves on Shape in the same Relay execution. That is just a second transaction in `txs` and is useful for onboarding, but most mint UIs only need the Shape contract call.
+
+See Relay's [Call Execution Integration Guide](https://docs.relay.link/references/api/api_guides/calling-integration-guide#common-use-cases) for the full quote, execution, and status flow.
+
+## 7. Verify on Shapescan
 
 ```bash
 forge verify-contract <CONTRACT_ADDRESS> src/MyNFT.sol:MyNFT \
@@ -133,7 +188,7 @@ forge verify-contract <CONTRACT_ADDRESS> src/MyNFT.sol:MyNFT \
 
 Once verified, view your contract at `https://sepolia.shapescan.xyz/address/<CONTRACT_ADDRESS>`.
 
-## 7. Register for Gasback
+## 8. Register for Gasback
 
 Register your contract for [Gasback](/tutorials/registering-contract-gasback) to reclaim 80% of sequencer fees users spend interacting with it.
 
