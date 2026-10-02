@@ -52,4 +52,4 @@ bun run test:ai-docs
 
 Edit the MDX source or shared components, then regenerate the assets. Do not edit generated Markdown directly. The converter handles the current static MDX patterns and stops on unknown components, unclosed code fences, or unmapped documentation links. Add conversion support and a test when introducing a new MDX component. Fenced code blocks are preserved verbatim.
 
-Generated files under `public/` are committed so previews and local development can read them before a production build. Regenerate them with source changes. `.ai-docs-manifest.json` records the generated page paths so deleted pages are removed on regeneration and HTML alternatives use the same route map.
+Generated files under `public/` are ignored by Git. Both development and production scripts generate them from the existing source before starting Next.js. `.ai-docs-manifest.json` records the generated page paths so deleted pages are removed on regeneration and HTML alternatives use the same route map. Titles, summaries, examples, and component text come from the original content; only navigation grouping is configured in the generator.

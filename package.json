@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/generate-ai-docs.mjs && next dev",
     "build": "node scripts/generate-ai-docs.mjs && next build",
     "start": "next start",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",

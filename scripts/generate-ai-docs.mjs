@@ -160,27 +160,11 @@ export async function generate(root) {
     const body = convert(source, { components, paths, routes, route: record.route });
     const title = body.match(/^# (.+)$/m)?.[1];
     if (!title) throw new Error(`Missing title: ${record.file}`);
-    const descriptions = {
-      '/technical-details/network-information':
-        'Mainnet and testnet chain IDs, ETH gas currency, RPC endpoints, and explorers.',
-      '/technical-details/contract-addresses':
-        'Official network infrastructure contract addresses.',
-      '/the-stack':
-        'Dynamic NFT achievements, participation, and medals across the Shape ecosystem.',
-      '/tutorials/registering-contract-gasback':
-        'Choose dashboard or programmatic contract registration for Gasback.',
-      '/building-on-shape/ai':
-        'Shape MCP, AI integration examples, and agent development guidance.',
-      '/tools/node-providers': 'Public and provider RPC endpoints for mainnet and testnet.',
-      '/tools/data-indexers': 'NFT queries, indexing services, and data APIs.',
-      '/tools/oracles/gelato-vrf':
-        'Request verifiable randomness from smart contracts using Gelato VRF.',
-    };
     const paragraph = body
       .split('\n\n')
       .map((block) => block.trim())
       .find((block) => block && !/^(#|>|-|\d+\.|\||`|~)/.test(block));
-    let description = (descriptions[record.route] || paragraph || 'Documentation for ' + title)
+    let description = (paragraph || 'Documentation for ' + title)
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
       .replace(/[*`]/g, '')
       .replace(/\s+/g, ' ')
@@ -244,10 +228,10 @@ export async function generate(root) {
     ],
   ];
   const used = new Set();
+  const introduction = rendered.find((record) => record.route === '/');
   let index =
-    '# Shape Documentation\n\n> Official technical documentation for Shape, an Ethereum L2 built on the OP Stack and part of the Optimism Superchain.\n\n' +
-    'Mainnet chain ID: 360. Shape Sepolia chain ID: 11011. Gas currency: ETH. Gasback shares 80% of L2 sequencer fees with registered contract owners, excluding L1 data fees.\n\n' +
-    'Links below lead to Markdown generated from the same source as the website. Follow the relevant pages for full context. For current $SHAPE token and governance information, see https://shape.network/token.\n\n';
+    `# Shape Documentation\n\n> ${introduction.description}\n\n` +
+    'Links below are generated from the existing documentation source. Follow individual pages for details.\n\n';
   for (const [title, entries] of [
     ...sections,
     ['Tools and Further Reading', rendered.map((record) => record.route)],
@@ -268,7 +252,7 @@ export async function generate(root) {
     '/llms-full.txt): All generated pages in one file. Use individual pages for narrower questions.\n';
   await writeFile(path.join(publicDir, 'llms.txt'), index);
   const full =
-    '# Shape Technical Documentation\n\nGenerated from the official documentation source. This is the technical corpus; token and governance information is maintained at https://shape.network/token.\n\n' +
+    '# Shape Technical Documentation\n\nGenerated from the existing documentation source.\n\n' +
     rendered
       .map(
         (record) =>
