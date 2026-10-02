@@ -1,0 +1,196 @@
+# Launch an NFT Collection on Shape
+
+Deploy an ERC-721 contract to Shape Sepolia, mint an NFT, and verify it on the block explorer.
+
+## Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) installed
+- Shape Sepolia ETH from the [Alchemy Faucet](https://www.alchemy.com/faucets/shape-sepolia)
+- A wallet private key funded with testnet ETH
+
+## 1. Set Up the Project
+
+```bash
+forge init my-nft && cd my-nft
+rm src/Counter.sol test/Counter.t.sol script/Counter.s.sol
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
+
+Add the `remappings` line to `foundry.toml`:
+
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
+```
+
+## 2. Write the Contract
+
+Create `src/MyNFT.sol`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+
+contract MyNFT is ERC721, Ownable {
+    uint256 public totalSupply;
+    uint256 public constant MAX_SUPPLY = 1000;
+    string private _baseTokenURI;
+
+    constructor() ERC721("MyNFT", "MNFT") Ownable(msg.sender) {}
+
+    function mint(address to) external onlyOwner {
+        require(totalSupply < MAX_SUPPLY, "Max supply reached");
+        _mint(to, totalSupply);
+        totalSupply++;
+    }
+
+    function setBaseURI(string calldata baseURI) external onlyOwner {
+        _baseTokenURI = baseURI;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return _baseTokenURI;
+    }
+}
+```
+
+## 3. Test
+
+Create `test/MyNFT.t.sol`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {Test} from "forge-std/Test.sol";
+import {MyNFT} from "../src/MyNFT.sol";
+
+contract MyNFTTest is Test {
+    MyNFT nft;
+
+    function setUp() public {
+        nft = new MyNFT();
+    }
+
+    function test_mint() public {
+        nft.mint(address(this));
+        assertEq(nft.ownerOf(0), address(this));
+        assertEq(nft.totalSupply(), 1);
+    }
+}
+```
+
+```bash
+forge test
+```
+
+## 4. Deploy to Shape Sepolia
+
+```bash
+export PRIVATE_KEY=<YOUR_PRIVATE_KEY>
+
+forge create src/MyNFT.sol:MyNFT \
+  --rpc-url https://sepolia.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+Save the `Deployed to` address from the output.
+
+## 5. Mint an NFT
+
+```bash
+cast send <CONTRACT_ADDRESS> "mint(address)" <YOUR_ADDRESS> \
+  --rpc-url https://sepolia.shape.network \
+  --private-key $PRIVATE_KEY
+```
+
+Confirm the mint:
+
+```bash
+cast call <CONTRACT_ADDRESS> "ownerOf(uint256)" 0 \
+  --rpc-url https://sepolia.shape.network
+```
+
+This returns your address (ABI-encoded, zero-padded to 32 bytes).
+
+## 6. Optional: Let Users Mint From Another Chain
+
+If your mint UI should let users start from Ethereum, Base, Arbitrum, or another supported chain, use Relay cross-chain call execution. The UI can let the user pay from an origin-chain balance while Relay executes the NFT mint call on Shape.
+
+The most important contract detail is to mint to an explicit recipient, like `mint(address to)`, instead of relying only on `msg.sender`. Relay's Shape-side address executes the destination call, so your UI should encode the buyer's address into the mint calldata and your contract should allow the Relay address to call that mint path. Treat this as a narrow exception: most arbitrary addresses should still be blocked from minting this way, but the Relay executor or relayer address you configure for Shape needs permission to call the function and mint the NFT to the recipient.
+
+```ts
+import { getClient } from '@relayprotocol/relay-sdk';
+import { encodeFunctionData, parseEther, zeroAddress } from 'viem';
+
+const relayClient = getClient();
+const shapeSepoliaChainId = 11011; // Use 360 for Shape mainnet.
+const mintPrice = parseEther('0.01');
+
+const callData = encodeFunctionData({
+  abi: nftAbi,
+  functionName: 'mint',
+  args: [userAddress],
+});
+
+const quote = await relayClient.actions.getQuote({
+  wallet,
+  chainId: originChainId,
+  toChainId: shapeSepoliaChainId,
+  currency: zeroAddress,
+  toCurrency: zeroAddress,
+  user: userAddress,
+  recipient: userAddress,
+  amount: mintPrice.toString(),
+  tradeType: 'EXACT_OUTPUT',
+  txs: [
+    {
+      to: nftContractAddress,
+      value: mintPrice.toString(),
+      data: callData,
+    },
+  ],
+});
+
+await relayClient.actions.execute({
+  quote,
+  wallet,
+  onProgress: (progress) => {
+    // Use this to show states like:
+    // confirm in wallet -> origin transaction submitted -> relaying -> minted
+  },
+});
+```
+
+For a free mint, set the mint transaction `value` and quote `amount` to `"0"`. For a paid mint, use `EXACT_OUTPUT` with the exact ETH value your mint call requires on Shape. Keep quotes fresh, check the user's origin-chain balance before enabling the mint button, and show a clear error if Relay has insufficient liquidity or the user lacks enough ETH for the amount, Relay fees, and origin-chain gas.
+
+The Stack mint UI uses the same pattern, with one extra convenience: users can optionally send additional ETH to themselves on Shape in the same Relay execution. That is just a second transaction in `txs` and is useful for onboarding, but most mint UIs only need the Shape contract call.
+
+See Relay's [Call Execution Integration Guide](https://docs.relay.link/references/api/api_guides/calling-integration-guide#common-use-cases) for the full quote, execution, and status flow.
+
+## 7. Verify on Shapescan
+
+```bash
+forge verify-contract <CONTRACT_ADDRESS> src/MyNFT.sol:MyNFT \
+  --verifier blockscout \
+  --verifier-url https://sepolia.shapescan.xyz/api/
+```
+
+Once verified, view your contract at `https://sepolia.shapescan.xyz/address/<CONTRACT_ADDRESS>`.
+
+## 8. Register for Gasback
+
+Register your contract for [Gasback](https://docs.shape.network/tutorials/registering-contract-gasback/index.md) to reclaim 80% of sequencer fees users spend interacting with it.
+
+## Next Steps
+
+- **Deploy to mainnet**: Use `--rpc-url https://mainnet.shape.network` and verify against `https://shapescan.xyz/api/`
+- **View on Deca**: Once on mainnet, see your collection at `https://deca.art/token/shape/<CONTRACT_ADDRESS>/<TOKEN_ID>`
+- **Add metadata**: Upload JSON metadata to IPFS with [Pinata](https://pinata.cloud/), then call `setBaseURI` to point your tokens at it
+- [Build a dApp](https://docs.shape.network/building-on-shape/builder-kit.md) with the Shape Builder Kit

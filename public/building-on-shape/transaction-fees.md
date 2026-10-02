@@ -1,0 +1,94 @@
+# Transaction Fees
+
+Learn how network fees work on Shape, what changes them, where they go, and how to estimate them.
+
+## How do network fees on Shape work?
+
+Shape transaction fees are paid in **Ether** ("ETH").
+
+Every Shape transaction involves two separate costs:
+
+- **L1 Fee**: the security fee for publishing transaction data to Ethereum.
+- **L2 Fee**: the execution fee for running the transaction on Shape.
+
+Fees on Shape are much cheaper than what you'd pay for an equivalent transaction on Ethereum. The total cost can still vary based on Ethereum network activity, Shape network activity, transaction size, and any priority fee you choose to include.
+
+## L1 Fee
+
+The L1 Fee is paid to ensure your transaction's data is published to Ethereum, guaranteeing its availability for nodes to download and execute. This is crucial for maintaining the security properties of Shape.
+
+This fee varies depending on the current base fee on Ethereum and the amount of transaction data that needs to be published. If the timing of your transaction is flexible, submitting during periods of lower Ethereum gas can reduce the L1 Fee.
+
+L1 Fees are used to cover costs paid to Ethereum validators.
+
+## L2 Fee
+
+The L2 Fee is paid to execute your transaction on Shape. It has two components: a base fee and a priority fee.
+
+The **base fee** is the minimum required for your transaction to be included in a block.
+
+The **priority fee** is _optional_, and you decide how much to pay if you choose to include it.
+
+> Shape executes transactions in descending priority order - with higher priority fees taking
+> precedence over lower priority fees - so the priority fee allows you to efficiently express
+> the urgency of your transaction.
+
+The L2 Fee is also known as the **Sequencer Fee**. You can find more information about transaction fee calculation in the [OP Stack transaction fee documentation](https://docs.optimism.io/op-stack/transactions/fees).
+
+## Where do fees go?
+
+L1 Fees are used to cover the cost of publishing transaction data to Ethereum.
+
+**Shape directs 80% of ETH collected from L2 Fees back to the contracts that generated the activity**, ensuring the creators and platforms that thrive on the network share in its success.
+
+> Learn more about how this works in [Gasback](https://docs.shape.network/gasback.md).
+
+For the remaining 20%:
+
+- 15% goes to the Optimism Collective to fund public goods
+- 5% goes to infrastructure and the Shape Foundation during the early stages of the network
+
+## Minimum Base Fee
+
+Shape uses a minimum L2 base fee to keep execution fees from falling to near-zero during quiet periods. This floor keeps blockspace predictably priced while preserving low transaction costs for apps, creators, and users.
+
+The minimum L2 base fee on Shape Mainnet is 10,000,000 wei (0.01 gwei). Shape may adjust this value as network usage evolves. At 0.01 gwei, a transaction using 200,000 L2 gas costs about $0.004 in L2 base fee when ETH is $2,000, before priority fees and the separate L1 data fee.
+
+### Why it matters
+
+- **Gasback alignment**: The minimum applies to L2 execution fees, which are the fees Shape shares with registered contracts through Gasback.
+- **More reliable inclusion**: A nonzero floor helps the fee market respond when demand increases after quiet periods, reducing the chance that transactions wait while fees catch up.
+- **Predictable app costs**: During normal demand, the L2 base fee should remain close to the floor. During congestion, it can rise with network usage.
+- **Healthier blockspace pricing**: The floor discourages low-value spam while keeping normal Shape transactions inexpensive.
+
+## EIP-1559 fee behavior
+
+Shape uses the OP Stack's implementation of EIP-1559 for L2 execution fees. The L2 base fee adjusts in response to network demand, while the priority fee lets users express transaction urgency.
+
+When Shape is less busy, the L2 base fee can decrease. When blocks are more heavily used, the L2 base fee can increase. This is separate from the L1 Fee, which varies with Ethereum gas costs and the size of the transaction data being posted.
+
+OP Stack chains can tune fee behavior with parameters such as EIP-1559 elasticity, EIP-1559 denominator, gas limit, and minimum base fee. Shape-specific values are not listed here unless published or verified from the live network configuration. For the underlying OP Stack parameter model, see the [OP Stack fee parameter documentation](https://docs.optimism.io/chain-operators/guides/management/transaction-fees-101).
+
+## Querying the L1 fee
+
+The **GasPriceOracle** predeploy at `0x420000000000000000000000000000000000000F` lets you programmatically estimate the L1 Fee component before signing and submitting a transaction.
+
+| Method                               | Returns                                                              |
+| ------------------------------------ | -------------------------------------------------------------------- |
+| `getL1Fee(bytes)`                    | Exact L1 fee for a fully serialized transaction                      |
+| `getL1FeeUpperBound(uint256 txSize)` | Upper-bound L1 fee estimate from approximate transaction byte length |
+| `l1BaseFee()`                        | Current Ethereum L1 base fee as seen by Shape                        |
+| `blobBaseFee()`                      | Current EIP-4844 blob base fee                                       |
+| `baseFeeScalar()`                    | Scalar applied to the L1 base fee component                          |
+| `blobBaseFeeScalar()`                | Scalar applied to the blob base fee component                        |
+
+Use `getL1FeeUpperBound` when you need a quick estimate before the transaction is fully constructed. Use `getL1Fee` with the complete serialized transaction for an exact estimate before signing.
+
+The GasPriceOracle address is also listed in [Contract Addresses](https://docs.shape.network/technical-details/contract-addresses.md).
+
+## Related resources
+
+- [Gasback](https://docs.shape.network/gasback.md)
+- [Network Information](https://docs.shape.network/technical-details/network-information.md)
+- [Contract Addresses](https://docs.shape.network/technical-details/contract-addresses.md)
+- [OP Stack transaction fees](https://docs.optimism.io/op-stack/transactions/fees)

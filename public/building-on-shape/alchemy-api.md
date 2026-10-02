@@ -1,0 +1,10 @@
+# Alchemy API
+
+Find out what Alchemy tools are available to use on Shape.
+
+Checkout [Alchemy's Quickstart guide](https://docs.alchemy.com/reference/shape-api-quickstart) for Shape API. The [full suite](https://www.alchemy.com/) of Alchemy tools are available for builders on Shape.
+
+Visit your [Alchemy dashboard](https://dashboard.alchemy.com/) and start building now!
+
+> Visit your [Alchemy dashboard](https://www.alchemy.com/dashboard) and start building
+> now!

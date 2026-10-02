@@ -1,0 +1,238 @@
+# OTOM by Kjetil Golid
+
+Create and experiment with particles called otoms
+
+**Website**: [otom.xyz](https://otom.xyz/)
+
+**Repo:** [github.com/shape-network/otom-contracts](https://github.com/shape-network/otom-contracts)
+
+There are four main actions a chemist can take within the otoms universe.
+
+1. **Mine for Otoms**
+2. **Annihilate said Otoms and receive Energy (ERC20)**
+3. **Use Energy along with multiple Otoms to initiate a reaction**
+4. **Analyze reactions and receive molecules (Chemists can analyze multiple unanalyzed reactions in a single transaction)**
+
+## Contracts
+
+### Shape Mainnet
+
+| Link                                                                                                              | Description                                                                                                             | Address                                      |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| [**Otoms**](https://shapescan.xyz/address/0x2f9810789aebBB6cdC6c0332948fF3B6D11121E3?tab=contract)                | Main NFT contract for minting otoms                                                                                     | `0x2f9810789aebBB6cdC6c0332948fF3B6D11121E3` |
+| [**OtomsDatabase**](https://shapescan.xyz/address/0x953761a771d6Ad9F888e41b3E7c9338a32b1A346?tab=contract)        | DB used for storing information related to things like; tokenURI, Molecules, Who first discovered a Molecule, Universes | `0x953761a771d6Ad9F888e41b3E7c9338a32b1A346` |
+| [**OtomsReactionOutputs**](https://shapescan.xyz/address/0x7d5A370F277e1847E4f768a88758237c6E3456eD?tab=contract) | Secondary NFT contract of unextracted Molecules                                                                         | `0x7d5A370F277e1847E4f768a88758237c6E3456eD` |
+| [**Energy**](https://shapescan.xyz/address/0x42276dF82BAb34c3CCcA9e5c058b6ff7EA4d07e3?tab=contract)               | Fungible token used in reactions                                                                                        | `0x42276dF82BAb34c3CCcA9e5c058b6ff7EA4d07e3` |
+| [**Reactor**](https://shapescan.xyz/address/0xB8874fCE9b702B191C306A21c7A4a101FB14a0fc?tab=contract)              | Main reactor contract, used to initialize and analyze reactions                                                         | `0xB8874fCE9b702B191C306A21c7A4a101FB14a0fc` |
+| [**Annihilator**](https://shapescan.xyz/address/0xca3088aedaAB138cAB3F0c135ceD77aF1a8b9063?tab=contract)          | Used to convert NFT Otoms into fungible Energy                                                                          | `0xca3088aedaAB138cAB3F0c135ceD77aF1a8b9063` |
+
+### Shape Sepolia
+
+| Link                                                                                                              | Description                                                                                                             | Address                                      |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| [**Otoms**](https://sepolia.shapescan.xyz/address/0xc709F59f1356230025d4fdFDCeD92341A14FF2F8?tab=contract)                | Main NFT contract for minting otoms                                                                                     | `0xc709F59f1356230025d4fdFDCeD92341A14FF2F8` |
+| [**OtomsDatabase**](https://sepolia.shapescan.xyz/address/0xC6E01938846D3d62EafD7FF485afeE416f6D8A40?tab=contract)        | DB used for storing information related to things like; tokenURI, Molecules, Who first discovered a Molecule, Universes | `0xC6E01938846D3d62EafD7FF485afeE416f6D8A40` |
+| [**OtomsReactionOutputs**](https://sepolia.shapescan.xyz/address/0x042125947523dD14dc64e3093a53DfCcdF07d979?tab=contract) | Secondary NFT contract of unextracted Molecules                                                                         | `0x042125947523dD14dc64e3093a53DfCcdF07d979` |
+| [**Energy**](https://sepolia.shapescan.xyz/address/0xe59D1719d3F8c149B009cB05a7679ce1dC074787?tab=contract)               | Fungible token used in reactions                                                                                        | `0xe59D1719d3F8c149B009cB05a7679ce1dC074787` |
+| [**Reactor**](https://sepolia.shapescan.xyz/address/0x62C87dd718E60c31993cf1a5EB32EE472C7eD144?tab=contract)              | Main reactor contract, used to initialize and analyze reactions                                                         | `0x62C87dd718E60c31993cf1a5EB32EE472C7eD144` |
+| [**Annihilator**](https://sepolia.shapescan.xyz/address/0xC998b6604aA50F71dd1b52884544c9107cf267E9?tab=contract)          | Used to convert NFT Otoms into fungible Energy                                                                          | `0xC998b6604aA50F71dd1b52884544c9107cf267E9` |
+
+## Functionality
+
+### Mining Otoms
+
+```solidity filename="Otoms.sol"
+/**
+ * @dev Mines atoms based on the provided payloads.
+ * @param _payloads The payloads to mine atoms from.
+ * @return The token IDs of the mined atoms.
+ */
+function mine(
+   MiningPayload[] calldata payloads
+) external returns (uint256[] memory);
+```
+
+### Mining Payload
+
+```solidity filename="IOtoms.sol"
+struct MiningPayload {
+    Molecule minedMolecule;
+    bytes32 miningHash;
+    string tokenUri;
+    bytes32 universeHash;
+    uint256 expiry;
+    bytes signature;
+}
+```
+
+### Reacting with Otoms
+
+```solidity filename="Reactor.sol"
+/**
+ * @dev Initiates a reaction with the provided atom IDs and energy amount.
+ * @param atomIds The token IDs of the atoms to be used in the reaction.
+ * @param energyAmount The amount of energy to be used in the reaction.
+ * @return The token ID of the output of the reaction.
+ */
+function initiateReaction(
+   uint256[] memory atomIds,
+   uint256 energyAmount
+) external returns (uint256);
+
+/**
+ * @dev Analyses the provided reaction results and returns
+ * the output of the reaction.
+ * @param reactionResults The results of the reaction.
+ * @param expiry The expiry time of the reaction.
+ * @param signature The signature of the reaction.
+ * @return The output of the reaction.
+ */
+function analyseReactions(
+   ReactionResult[] memory reactionResults,
+   uint256 expiry,
+   bytes memory signature
+) external;
+```
+
+### Annihilating Otoms
+
+```solidity filename="Annihilator.sol"
+/**
+ * @dev Annihilates the provided atom IDs.
+ * @param atomIds The token IDs of the atoms to be annihilated.
+ * @return The amount of energy produced by the annihilations.
+ */
+function annihilate(
+   uint256[] memory atomIds
+) external nonReentrant returns (uint256)
+```
+
+## Structs
+
+```solidity filename="IOtomsDatabase.sol"
+struct Molecule {
+    string id;
+    string name;
+    bytes32 universeHash;
+    uint256 activationEnergy;
+    uint256 radius;
+    Bond bond;
+    Atom[] givingAtoms;
+    Atom[] receivingAtoms;
+    uint256 electricalConductivity;
+    uint256 thermalConductivity;
+    uint256 toughness;
+    uint256 hardness;
+    uint256 ductility;
+}
+
+struct Atom {
+    uint256 radius;
+    uint256 volume;
+    uint256 mass;
+    uint256 density;
+    uint256 electronegativity;
+    bool metallic;
+    string name;
+    string series;
+    uint256 periodicTableX;
+    uint256 periodicTableY;
+    AtomStructure structure;
+    Nucleus nucleus;
+}
+```
+
+> We've included the three main structs used for mining otoms. Check out `IOtoms.sol` and
+> `IOtomsDatabase.sol` for more info.
+
+## Data
+
+```solidity filename="OtomsDatabase.sol"
+function getMoleculeByTokenId(
+    uint256 tokenId
+) external view returns (Molecule memory);
+
+function getUniverseInformation(
+    bytes32 universeHash
+) external view returns (UniverseInformation memory);
+
+function getMoleculesDiscovered(
+    bytes32 universeHash
+) external view returns (Molecule[] memory);
+
+function getMoleculesDiscoveredPaginated(
+    bytes32 universeHash,
+    uint256 offset,
+    uint256 limit
+) external view returns (Molecule[] memory molecules, uint256 total);
+
+function activeUniverses() external view returns (bytes32[] memory);
+```
+
+### Otoms
+
+```solidity filename="Otoms.sol"
+function moleculeIsAtom(
+    Molecule memory _molecule
+) external pure returns (bool);
+```
+
+### ReactionOutputs
+
+```solidity filename="OtomsReactionOutputs.sol"
+function getReactionOutputData(
+    uint256 tokenId
+) external view returns (ReactionOutputData memory);
+```
+
+## Encoding Utilities
+
+```solidity filename="IOtomsEncoder.sol"
+function encodeMolecule(
+    Molecule memory _newMolecule
+) external pure returns (bytes32);
+
+function encodeAtom(
+    Atom memory _newAtom
+) external pure returns (bytes32);
+
+function encodeStructure(
+    AtomStructure memory _newStructure
+) external pure returns (bytes32);
+
+function encodeNucleus(
+    Nucleus memory _newNucleus
+) external pure returns (bytes32);
+
+function encodeUniverseInformation(
+    UniverseInformation memory _universeInformation
+) external pure returns (bytes32);
+
+function getSeedUniverseMessageHash(
+    UniverseInformation memory _universeInformation,
+    uint256 expiry,
+    address sender
+) external view returns (bytes32);
+
+function getMiningMessageHash(
+    Molecule memory _newAtom,
+    bytes32 _miningHash,
+    string memory _tokenUri,
+    bytes32 _universeHash,
+    uint256 expiry,
+    address sender
+) external view returns (bytes32);
+
+function getMiningHash(
+    address _chemist,
+    bytes32 _universeHash,
+    uint256 _nonce
+) external pure returns (bytes32);
+
+function getMultipleMiningHashes(
+    address _chemist,
+    bytes32 _universeHash,
+    uint256 _startingNonce,
+    uint256 _count
+) external pure returns (bytes32[] memory);
+```

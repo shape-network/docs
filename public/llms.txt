@@ -1,70 +1,58 @@
-# Shape Network Documentation
+# Shape Documentation
 
-> Shape is a culture-first EVM-compatible L2 built on Ethereum and the Optimism Superchain. It returns 80% of sequencer fees to contract owners via Gasback. Chain ID: 360 (mainnet), 11011 (testnet). Currency: ETH. RPC: https://mainnet.shape.network
+> Official technical documentation for Shape, an Ethereum L2 built on the OP Stack and part of the Optimism Superchain.
 
-## Getting Started
+Mainnet chain ID: 360. Shape Sepolia chain ID: 11011. Gas currency: ETH. Gasback shares 80% of L2 sequencer fees with registered contract owners, excluding L1 data fees.
 
-- [Introduction](https://docs.shape.network): Overview of Shape, the culture-first L2 for creators and the new NFT economy
-- [Wallet Setup](https://docs.shape.network/wallet-setup): Add Shape to your wallet, bridge ETH, mint your Stack
-- [Gasback](https://docs.shape.network/gasback): Claim back 80% of L2 sequencer fees users spend interacting with your contracts
-- [The Stack](https://docs.shape.network/the-stack): Dynamic NFT reputation system with bronze, silver, gold, and special medals
+Links below lead to Markdown generated from the same source as the website. Follow the relevant pages for full context. For current $SHAPE token and governance information, see https://shape.network/token.
 
-## Quick Start
+## Start Here
 
-- [Quick Start](https://docs.shape.network/quick-start): Developer onboarding hub for Shape
-- [Connect to Shape](https://docs.shape.network/quick-start/connect-to-shape): Configure viem, wagmi, Foundry, and ethers.js for Shape Mainnet (chain ID 360) and Shape Sepolia (chain ID 11011)
-- [Deploy a Contract](https://docs.shape.network/quick-start/deploy-a-contract): Deploy and verify a smart contract on Shape with Foundry
+- [Welcome](https://docs.shape.network/index.md): Shape is the culture-first L2 built on top of Ethereum to power the new NFT economy.
+- [Wallet Setup](https://docs.shape.network/wallet-setup.md): Set up your wallet on Shape.
+- [Start Building on Shape](https://docs.shape.network/quick-start/index.md): Shape is an EVM-compatible L2 on the Optimism Superchain. Gasback returns 80% of sequencer fees to contract owners.
+- [Network Information](https://docs.shape.network/technical-details/network-information.md): Mainnet and testnet chain IDs, ETH gas currency, RPC endpoints, and explorers.
 
-## Building on Shape
+## Gasback and Fees
 
-- [Builder Kit](https://docs.shape.network/building-on-shape/builder-kit): Next.js starter with wallet connect (wagmi), NFT fetching, Shape RPC, and Shadcn UI
-- [AI Agents](https://docs.shape.network/building-on-shape/ai): Build AI agents with MCP, Shape MCP server, and Vercel AI SDK
-- [Transaction Fees](https://docs.shape.network/building-on-shape/transaction-fees): L1 security fees + L2 execution fees. 80% of L2 fees go back to contract owners via Gasback, 15% to Optimism Collective, 5% to Shape Foundation
-- [Differences from Ethereum](https://docs.shape.network/building-on-shape/differences-ethereum-shape): EVM equivalent via OP Stack with minor opcode changes, dual-fee system, faster block times
-- [Alchemy API](https://docs.shape.network/building-on-shape/alchemy-api): Full Alchemy tool suite available on Shape
-- [Superchain Incentives](https://docs.shape.network/building-on-shape/superchain-incentives): RetroPGF, free contract deployment, gas sponsorship, launch support
+- [Gasback](https://docs.shape.network/gasback.md): Claim back 80% of the sequencer fees that users spend interacting with your contracts on Shape.
+- [Transaction Fees](https://docs.shape.network/building-on-shape/transaction-fees.md): Learn how network fees work on Shape, what changes them, where they go, and how to estimate them.
+- [Registering Your Contract for Gasback](https://docs.shape.network/tutorials/registering-contract-gasback/index.md): Choose dashboard or programmatic contract registration for Gasback.
 
-## Technical Reference
+## Build Applications
 
-- [Network Information](https://docs.shape.network/technical-details/network-information): Mainnet chain ID 360, RPC https://mainnet.shape.network, explorer https://shapescan.xyz. Testnet chain ID 11011, RPC https://sepolia.shape.network, explorer https://sepolia.shapescan.xyz
-- [Contract Addresses](https://docs.shape.network/technical-details/contract-addresses): L1 and L2 contract addresses for mainnet and Sepolia. Gasback contract: 0xf5e602c87d675E978F097503aedE4A766285a08B (mainnet), 0xdF329d59bC797907703F7c198dDA2d770fC45034 (testnet)
-- [Run a Node](https://docs.shape.network/technical-details/run-a-node): Run Shape mainnet and Sepolia nodes using op-node with custom rollup.json and genesis.json
+- [Connect to Shape](https://docs.shape.network/quick-start/connect-to-shape.md): Shape Mainnet runs on chain ID 360. Shape Sepolia (testnet) runs on chain ID 11011.
+- [Deploy a Contract on Shape](https://docs.shape.network/quick-start/deploy-a-contract.md): Deploy a smart contract to Shape Sepolia and verify it on the block explorer using Foundry.
+- [Shape Builder Kit for Developers](https://docs.shape.network/building-on-shape/builder-kit.md): The Shape Builder Kit is your go-to starter for crafting dApps on the Shape ecosystem. It's a monorepo with a Next.js frontend (wagmi, viem) and a Hardhat smart contract package, all pre-wired with sensible defaults.
+- [Launch an NFT Collection on Shape](https://docs.shape.network/tutorials/mint-nft-collection.md): Deploy an ERC-721 contract to Shape Sepolia, mint an NFT, and verify it on the block explorer.
+- [AI Agents on Shape](https://docs.shape.network/building-on-shape/ai.md): Shape MCP, AI integration examples, and agent development guidance.
 
-## Onchain Projects
+## Explore and Operate
 
-- [Onchain Compatible](https://docs.shape.network/building-on-shape/onchain-compatible): Collection of interoperable onchain projects on Shape
-- [Assembly](https://docs.shape.network/building-on-shape/onchain-compatible/assembly): ERC1155 crafting system built on Otoms. Blueprints, tiers, mutator contracts, fungible and non-fungible items
-- [OTOM](https://docs.shape.network/building-on-shape/onchain-compatible/otom): Onchain particle chemistry by Kjetil Golid. Mine otoms, annihilate for energy, react to create molecules
+- [The Stack](https://docs.shape.network/the-stack.md): Dynamic NFT achievements, participation, and medals across the Shape ecosystem.
+- [Contract Addresses](https://docs.shape.network/technical-details/contract-addresses.md): Official network infrastructure contract addresses.
+- [Run a Node](https://docs.shape.network/technical-details/run-a-node.md): Shape is an OP Stack rollup. Running a Shape node requires two clients that talk over the Engine API and authenticate with a shared JWT secret:
+- [Differences between Ethereum and Shape](https://docs.shape.network/building-on-shape/differences-ethereum-shape.md): Shape is EVM equivalent, but has some minor differences.
 
-## Tools
+## Tools and Further Reading
 
-- [Account Abstraction](https://docs.shape.network/tools/account-abstraction): Alchemy Bundler, Gas Manager, Embedded Accounts, Smart Accounts. Crossmint NFT Checkout and Wallet-as-a-Service
-- [Bridges](https://docs.shape.network/tools/bridges): Relay (instant bridging), Superbridge (native bridging), Alchemy bridge. Testnet bridges available for Sepolia
-- [Explorers](https://docs.shape.network/tools/explorers): Shapescan (block explorer), Deca (NFT explorer), Zapper (human-readable onchain activity)
-- [Data Indexers](https://docs.shape.network/tools/data-indexers): Alchemy NFT/Token/Transfers APIs and Webhooks, Alchemy Subgraphs, Goldsky, Reservoir, SimpleHash
-- [Faucets](https://docs.shape.network/tools/faucets): Alchemy and Optimism faucets for Shape Sepolia testnet ETH
-- [Node Providers](https://docs.shape.network/tools/node-providers): Alchemy Supernode RPC
-- [Oracles - Gelato VRF](https://docs.shape.network/tools/oracles/gelato-vrf): Verifiable randomness using Drand for gaming, DeFi, NFT generation
-- [Safes & Asset Security](https://docs.shape.network/tools/safes-asset-security): Safe multisig on Shape, Delegate for hot wallet claim/mint/ownership
-- [Sybil Resistance](https://docs.shape.network/tools/sybil-resistance): Gitcoin Passport, Premint allowlists, Crossmint Verifiable Credentials
-
-## Tutorials
-
-- [Launch an NFT Collection](https://docs.shape.network/tutorials/mint-nft-collection): Deploy an ERC-721 contract on Shape with Foundry, mint an NFT, verify on Shapescan
-- [Register Contract for Gasback (Dashboard)](https://docs.shape.network/tutorials/registering-contract-gasback/dashboard): Step-by-step UI guide to register contracts via the Gasback dashboard
-- [Register Contract for Gasback (Programmatic)](https://docs.shape.network/tutorials/registering-contract-gasback/programmatically): Three Solidity approaches to register contracts for Gasback
+- [Alchemy API](https://docs.shape.network/building-on-shape/alchemy-api.md): Find out what Alchemy tools are available to use on Shape.
+- [Assembly](https://docs.shape.network/building-on-shape/onchain-compatible/assembly.md): The Assembly system, built on top of Otoms, is a flexible ERC1155 implementation enabling the creation, crafting, and management of both fungible and non-fungible items on the blockchain. Built with upgradeability in...
+- [Onchain Compatible Projects](https://docs.shape.network/building-on-shape/onchain-compatible/index.md): A collection of projects made with interoperability in mind
+- [OTOM by Kjetil Golid](https://docs.shape.network/building-on-shape/onchain-compatible/otom.md): Create and experiment with particles called otoms
+- [Superchain incentives](https://docs.shape.network/building-on-shape/superchain-incentives.md): Learn about the Superchain incentives available to you as a Shape builder.
+- [Account Abstraction](https://docs.shape.network/tools/account-abstraction.md): On Shape, combine AA with Gasback to subsidize your users and recoup 80% of sequencer fees.
+- [Bridges](https://docs.shape.network/tools/bridges.md): Bridge ETH and tokens between Ethereum and Shape.
+- [Data Indexers](https://docs.shape.network/tools/data-indexers.md): NFT queries, indexing services, and data APIs.
+- [Explorers](https://docs.shape.network/tools/explorers.md): Verify your contracts on Shapescan to make them readable. See Deploy a Contract for verification steps.
+- [Faucets](https://docs.shape.network/tools/faucets.md): Get free testnet ETH on Shape Sepolia for development.
+- [Node Providers](https://docs.shape.network/tools/node-providers.md): Public and provider RPC endpoints for mainnet and testnet.
+- [Gelato VRF](https://docs.shape.network/tools/oracles/gelato-vrf.md): Request verifiable randomness from smart contracts using Gelato VRF.
+- [Safes & Asset Security](https://docs.shape.network/tools/safes-asset-security.md): Manage high-value assets and team operations securely on Shape.
+- [Sybil Resistance](https://docs.shape.network/tools/sybil-resistance.md): Protect your app from bots and sybil attacks while preserving user privacy.
+- [Registering via the Dashboard](https://docs.shape.network/tutorials/registering-contract-gasback/dashboard.md): This tutorial will guide you through the process of registering your smart contract for gasback using the Gasback Dashboard UI.
+- [Registering Programmatically](https://docs.shape.network/tutorials/registering-contract-gasback/programmatically.md): This tutorial will guide you through the process of registering your smart contract for gasback programmatically. The tutorial walks through 3 different approaches you can use, with full example contracts.
 
 ## Optional
 
-- [Shape Website](https://shape.network)
-- [Discord](https://discord.com/invite/shape-l2)
-- [X / Twitter](https://x.com/shape)
-- [GitHub](https://github.com/shape-network)
-- [Shape MCP Server](https://github.com/shape-network/mcp-server): MCP server for AI agents to query Gasback, NFT analytics, Stack medals
-- [Builder Kit Repo](https://github.com/shape-network/builder-kit): Next.js starter template source code
-- [Assembly Repo](https://github.com/shape-network/assembly): Assembly items system source code and contracts
-- [OTOM Contracts](https://github.com/shape-network/otom-contracts): OTOM smart contracts source code
-- [Gasback Dashboard](https://gasback.shape.network): Register and manage Gasback for your contracts
-- [The Stack App](https://stack.shape.network): Mint your Stack and track medals
-- [Shapescan](https://shapescan.xyz): Block explorer
-- [Deca](https://deca.art): NFT explorer
+- [All technical documentation](https://docs.shape.network/llms-full.txt): All generated pages in one file. Use individual pages for narrower questions.
