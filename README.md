@@ -40,3 +40,16 @@ If you have feedback, please open an issue or reach out to [@williamhzo](https:/
 ## License
 
 All content is © Shape Factory.
+
+## Documentation for AI tools
+
+The production build generates `/llms.txt`, `/llms-full.txt`, and Markdown versions of all documentation pages from `content/` and the shared cards and callouts. Each HTML page links to its Markdown alternative. `/llms.txt` groups entry points by task, while `/llms-full.txt` contains the technical documentation corpus.
+
+```bash
+bun run generate:ai-docs
+bun run test:ai-docs
+```
+
+Edit the MDX source or shared components, then regenerate the assets. Do not edit generated Markdown directly. The converter handles the current static MDX patterns and stops on unknown components, unclosed code fences, or unmapped documentation links. Add conversion support and a test when introducing a new MDX component. Fenced code blocks are preserved verbatim.
+
+Generated files under `public/` are ignored by Git. Both development and production scripts generate them from the existing source before starting Next.js. `.ai-docs-manifest.json` records the generated page paths so deleted pages are removed on regeneration and HTML alternatives use the same route map. Titles, summaries, examples, and component text come from the original content; only navigation grouping is configured in the generator.
