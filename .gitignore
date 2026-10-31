@@ -3,3 +3,9 @@ node_modules
 .env
 _pagefind/
 .claude/settings.local.json
+
+# Generated from content/ at build time
+/public/llms.txt
+/public/llms-full.txt
+/public/.ai-docs-manifest.json
+/public/**/*.md

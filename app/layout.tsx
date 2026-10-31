@@ -57,7 +57,7 @@ export default async function RootLayout({ children }) {
           light: '#fff',
         }}
       >
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
+        <link rel="describedby" href="/llms.txt" type="text/plain" />
       </Head>
 
       <body>
