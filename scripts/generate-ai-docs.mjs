@@ -160,11 +160,30 @@ export async function generate(root) {
     const body = convert(source, { components, paths, routes, route: record.route });
     const title = body.match(/^# (.+)$/m)?.[1];
     if (!title) throw new Error(`Missing title: ${record.file}`);
-    const paragraph = body
+    // Summarise from the lead (between the title and the first section, or the first
+    // section when there is no lead): its opening paragraph, else the first column of
+    // an opening table, else a paragraph that does not just introduce an example,
+    // else the page's section headings.
+    const [intro, first = ''] = body.slice(body.indexOf('\n') + 1).split(/^## /m);
+    const lead = (intro.trim() ? intro : first.slice(first.indexOf('\n') + 1))
       .split('\n\n')
       .map((block) => block.trim())
-      .find((block) => block && !/^(#|>|-|\d+\.|\||`|~)/.test(block));
-    let description = (paragraph || 'Documentation for ' + title)
+      .filter(Boolean);
+    const isParagraph = (block) => !/^(#|>|-|\*|\d+\.|\||`|~|!\[)/.test(block);
+    const tableRows = (block) =>
+      block
+        .split('\n')
+        .slice(2)
+        .map((row) => row.split('|')[1]?.trim())
+        .filter(Boolean);
+    const sections = [...body.matchAll(/^## (.+)$/gm)].map((match) => match[1].trim());
+    let summary;
+    if (lead[0] && isParagraph(lead[0])) summary = lead[0].replace(/:$/, '.');
+    else if (lead[0]?.startsWith('|') && tableRows(lead[0]).length)
+      summary = `${title}: ${tableRows(lead[0]).join(', ')}.`;
+    else summary = lead.find((block) => isParagraph(block) && !block.endsWith(':'));
+    if (!summary && sections.length) summary = `${title}: ${sections.join(', ')}.`;
+    let description = (summary || `Documentation for ${title}.`)
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
       .replace(/[*`]/g, '')
       .replace(/\s+/g, ' ')
